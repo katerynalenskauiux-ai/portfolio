@@ -1,0 +1,1751 @@
+<title>Kateryna Lenska — Product Design</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: wide 1180px frame on a soft grey-to-white ground. Big tight headlines, then large rounded "stages" where product screens float over a pale gradient, labelled with dark pills. Reading text keeps a 700px measure. Three views: Cases, About, FinGuard case. */
+:root{
+  --bg:#F1F2F1; --bg-2:#FAFAF9; --ink:#0E0F11; --muted:#5D6168; --faint:#90949A; --rule:#DEDFDC; --card:#FFFFFF;
+  --stage-a:#E3E9F2; --stage-b:#EEF1EA; --stage-c:#F6F4EF; --pill:#2A2C30; --on-pill:#F4F4F1; --stage-line:rgba(255,255,255,.55);
+  --accent:#2445C8; --flag:#A3271B; --warn:#8A5A00; --ok:#2C6E49;
+  --shadow:0 1px 2px rgba(14,15,17,.06),0 18px 48px -12px rgba(14,15,17,.22);
+  --f:"Geist","Helvetica Neue",Arial,sans-serif; --f-mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  --wide:1180px; --col:700px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D0E10; --bg-2:#131417; --ink:#EEEEEB; --muted:#A4A7AD; --faint:#777B82; --rule:#26282C; --card:#17181B;
+  --stage-a:#18202E; --stage-b:#1A1F1A; --stage-c:#1D1C19; --pill:#E9E9E5; --on-pill:#111214; --stage-line:rgba(255,255,255,.05);
+  --accent:#9DB0FF; --flag:#F08F84; --warn:#E5BC62; --ok:#7CC79C;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 48px -12px rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D0E10; --bg-2:#131417; --ink:#EEEEEB; --muted:#A4A7AD; --faint:#777B82; --rule:#26282C; --card:#17181B;
+  --stage-a:#18202E; --stage-b:#1A1F1A; --stage-c:#1D1C19; --pill:#E9E9E5; --on-pill:#111214; --stage-line:rgba(255,255,255,.05);
+  --accent:#9DB0FF; --flag:#F08F84; --warn:#E5BC62; --ok:#7CC79C;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 48px -12px rgba(0,0,0,.6); color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{background:linear-gradient(180deg,var(--bg) 0,var(--bg-2) 900px) var(--bg-2);color:var(--ink);font-family:var(--f);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px));padding-block:0 32px}
+.frame{max-width:var(--wide);margin:0 auto}
+.col{max-width:var(--col)}
+a{color:inherit;text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:4px;text-decoration-thickness:1px}
+a:hover{text-decoration-color:currentColor}
+:focus{outline:none}:focus-visible{outline:1px solid var(--ink);outline-offset:4px;border-radius:4px}
+h1,h2,h3,h4{font-weight:600;text-wrap:balance;margin:0;letter-spacing:-.035em;line-height:1.02}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-size:13px}
+.eyebrow{font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.label{font-size:14px;color:var(--faint);font-weight:500}
+.ph{font-style:normal;color:var(--warn);border-bottom:1px dotted currentColor}
+
+/* nav */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-block:32px}
+.bar .me{font-weight:600;font-size:20px;letter-spacing:-.02em;text-decoration:none}
+.bar nav{display:flex;gap:28px;flex-wrap:wrap;font-size:18px}
+.bar nav a{text-decoration:none;color:var(--muted);transition:color .15s}
+.bar nav a:hover,.bar nav a[aria-current="page"]{color:var(--ink)}
+.bar nav a[aria-current="page"]{font-weight:600}
+.theme{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:999px;border:0;background:transparent;color:var(--muted);cursor:pointer;box-shadow:inset 0 0 0 1px var(--rule);transition:color .15s,background .15s}
+.theme:hover{color:var(--ink);background:var(--card)}
+.theme .i-sun{display:none}
+.is-dark .theme .i-sun{display:block}.is-dark .theme .i-moon{display:none}
+.bar nav{align-items:center}
+.ext::after{content:"↗";margin-left:6px;color:var(--faint);font-weight:400}
+
+/* page heads */
+.head{padding-block:40px 36px;display:grid;gap:18px}
+.head h1{font-size:clamp(36px,4.6vw,64px);max-width:24ch;line-height:1.05}
+.head .lede{font-size:clamp(17px,1.4vw,19px);color:var(--muted);max-width:44em;line-height:1.55}
+
+/* stages: rounded panels with floating screens */
+.stage{position:relative;border-radius:40px;overflow:hidden;background:radial-gradient(120% 90% at 0% 0%,var(--stage-c) 0,transparent 55%),linear-gradient(120deg,var(--stage-a),var(--stage-b));aspect-ratio:16/9.4;box-shadow:inset 0 0 0 1px var(--stage-line)}
+.stage .scr{position:absolute;display:block;border-radius:14px;box-shadow:var(--shadow);background:var(--card);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.stage .scr-main{left:4%;top:12.8%;width:70%} /* centred: (stage h − 70% w × 10/16) / 2 */
+.stage .scr-side{right:4%;top:36%;width:38%}
+.pill{position:absolute;z-index:2;background:var(--pill);color:var(--on-pill);font-size:clamp(11px,1.15vw,15px);font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.75em 1.3em;border-radius:999px}
+.stage .pill-a{left:3%;bottom:6%}
+.stage .pill-b{right:4%;top:6%}
+.vt-fg{view-transition-name:fg-stage}
+.vt-koh{view-transition-name:koh-stage}
+.vt-olx{view-transition-name:olx-stage}
+.vt-aud{view-transition-name:aud-stage}
+.vt-odds{view-transition-name:odds-stage}
+::view-transition-group(aud-stage){animation-duration:.7s;animation-timing-function:cubic-bezier(.22,.8,.24,1)}
+::view-transition-old(aud-stage),::view-transition-new(aud-stage){height:100%;width:100%;object-fit:cover;object-position:top left}
+::view-transition-group(olx-stage){animation-duration:.7s;animation-timing-function:cubic-bezier(.22,.8,.24,1)}
+::view-transition-old(olx-stage),::view-transition-new(olx-stage){height:100%;width:100%;object-fit:cover;object-position:top left}
+
+::view-transition-group(koh-stage){animation-duration:.7s;animation-timing-function:cubic-bezier(.22,.8,.24,1)}
+::view-transition-old(koh-stage),::view-transition-new(koh-stage){height:100%;width:100%;object-fit:cover;object-position:top left}
+.stage-koh{background:radial-gradient(120% 90% at 100% 0%,var(--stage-c) 0,transparent 55%),linear-gradient(120deg,var(--stage-b),var(--stage-a))}
+.stage .scr{object-fit:cover;object-position:top left}
+.cases{gap:40px}
+::view-transition-group(fg-stage){animation-duration:.7s;animation-timing-function:cubic-bezier(.22,.8,.24,1)}
+::view-transition-old(fg-stage),::view-transition-new(fg-stage){height:100%;width:100%;object-fit:cover;object-position:top left}
+::view-transition-old(root){animation:vt-out .3s ease both}
+::view-transition-new(root){animation:vt-in .45s ease .15s both}
+@keyframes vt-out{to{opacity:0}}
+@keyframes vt-in{from{opacity:0;transform:translateY(12px)}}
+@media (prefers-reduced-motion: reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+.case-card{display:grid;gap:0;text-decoration:none;color:inherit;background:var(--card);border-radius:44px;padding:12px;box-shadow:0 0 0 1px var(--rule);transition:box-shadow .2s}
+.case-card:hover{box-shadow:0 0 0 1px var(--faint)}
+.case-card > .stage{border-radius:34px}
+.case-card .case-meta{padding:32px 28px 20px}
+.soon > div{background:var(--card);border-radius:40px;padding:12px;box-shadow:0 0 0 1px var(--rule)}
+.soon > div > h3{margin:22px 16px 6px}.soon > div > p{padding:0 16px 16px}
+.case-card:hover .scr-main{transform:translateY(-6px)}
+.case-card:hover .scr-side{transform:translateY(6px)}
+.case-meta{display:grid;grid-template-columns:1.1fr 1fr;gap:16px 56px;align-items:start;padding-inline:4px}
+.case-meta h2{font-size:clamp(30px,3.6vw,46px)}
+.case-meta p{color:var(--muted);font-size:18px}
+.case-meta .tags{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px 28px;font-size:15px;color:var(--faint);border-top:1px solid var(--rule);padding-top:16px;align-items:center}
+.case-meta .go{margin-left:auto;font-weight:600;color:var(--ink)}
+.case-card:hover .go{text-decoration:underline;text-underline-offset:4px}
+.cases{display:grid;gap:40px;padding-bottom:40px}
+.soon{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.soon .stage{aspect-ratio:16/10;display:grid;place-items:center;border-radius:32px}
+.soon .stage span{font-size:15px;color:var(--muted);font-weight:500}
+.soon h3{font-size:26px;margin:18px 4px 6px}
+.soon p{color:var(--muted);font-size:16.5px;padding-inline:4px}
+
+/* about */
+.about-grid{display:grid;grid-template-columns:5fr 7fr;gap:56px;align-items:start;padding-bottom:24px}
+.portrait{display:block;width:100%;height:auto;object-fit:cover;object-position:center 30%;border-radius:32px;aspect-ratio:4/5;background:linear-gradient(140deg,var(--stage-a),var(--stage-b));display:grid;place-items:center;color:var(--muted);font-size:15px;text-align:center;padding:24px}
+.portrait{padding:0!important;display:block!important}
+.about-copy{display:grid;gap:18px;font-size:19px}
+.about-copy .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:16px;font-weight:600;padding:12px 20px;border-radius:999px;border:0;background:var(--pill);color:var(--on-pill);text-decoration:none;cursor:pointer;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule)}
+.block{padding-block:72px 0;display:grid;grid-template-columns:240px 1fr;gap:24px 56px;border-top:1px solid var(--rule);margin-top:72px}
+.block > h2{font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.path{display:grid;gap:0}
+.path > div{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--rule)}
+.path > div:first-child{padding-top:0}
+.path .yr{font-family:var(--f-mono);font-size:14px;color:var(--faint);padding-top:4px}
+.path h3{font-size:22px;letter-spacing:-.02em;line-height:1.25}
+.path p{color:var(--muted);font-size:16.5px;margin-top:4px}
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:0 40px}
+.skills li{padding:12px 0;border-bottom:1px solid var(--rule);list-style:none;font-size:17px}
+.skills{padding:0;margin:0}
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.principles h3{font-size:21px;letter-spacing:-.02em;line-height:1.25;margin-bottom:8px}
+.principles p{color:var(--muted);font-size:16.5px}
+.contact-line{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:clamp(20px,3vw,36px);font-weight:600;letter-spacing:-.03em}
+.contact-line #mail{overflow-wrap:anywhere;min-width:0}
+#copied{font-size:14px;color:var(--muted);min-height:1em;margin-top:8px}
+footer.foot{margin-top:96px;padding-block:28px;border-top:1px solid var(--rule);color:var(--faint);font-size:15px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* ---------- CASE ---------- */
+.back{font-size:16px;text-decoration:none;color:var(--muted)}
+.back:hover{color:var(--ink)}
+.c-hero{padding-block:32px 24px;display:grid;gap:18px}
+.c-hero h1{font-size:clamp(36px,4.6vw,64px);max-width:24ch;line-height:1.05}
+.c-hero .lede{font-size:clamp(17px,1.4vw,19px);color:var(--muted);max-width:44em;line-height:1.55}
+.facts-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0 24px;border-top:1px solid var(--rule);padding-top:18px;margin-top:8px}
+.facts-grid div{display:grid;gap:4px;align-content:start;min-width:0}
+.facts-grid .label{font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+.facts-grid b{font-weight:500;font-size:16px;line-height:1.35}
+.stage-lg{margin-top:20px}
+.cap{font-size:15px;color:var(--muted);margin-top:12px;line-height:1.5}
+.note{border-left:2px solid var(--ink);padding:2px 0 2px 20px;display:grid;gap:6px;font-size:17px;color:var(--muted)}
+.note .label{color:var(--ink);font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase}
+.toc{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;display:flex;flex-wrap:wrap;gap:2px;padding:6px;margin-top:48px;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:999px;box-shadow:0 0 0 1px var(--rule);width:max-content;max-width:100%}
+.toc button{background:none;border:0;padding:8px 14px;border-radius:999px;color:var(--muted);cursor:pointer;font:inherit;font-size:14.5px;transition:background .15s,color .15s}
+.toc button:hover{background:var(--bg);color:var(--ink)}
+.toc button span{color:var(--faint);margin-right:6px;font-family:var(--f-mono);font-size:12.5px}
+.chapter{padding-block:104px 8px;display:grid;gap:24px;scroll-margin-top:40px}
+.chapter .num{font-size:14px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.chapter h2{font-size:clamp(36px,4.6vw,64px)}
+.chapter h3{font-size:clamp(24px,2.4vw,30px);letter-spacing:-.025em;line-height:1.15;margin-top:24px}
+.prose{display:grid;gap:16px}
+.prose ul{margin:0;padding-left:1.1em;display:grid;gap:10px}
+.prose strong{font-weight:600}
+figure{margin:12px 0}
+figure a{display:block;text-decoration:none}
+figure img{display:block;width:100%;border-radius:18px;background:var(--card);box-shadow:0 0 0 1px var(--rule)}
+figure img.tall{height:min(560px,80vw);object-fit:cover;object-position:top}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.pair figure{margin:0;border-radius:28px;padding:22px;background:linear-gradient(130deg,var(--stage-a),var(--stage-b))}
+.pair figure img{box-shadow:var(--shadow)}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px;padding:7px 14px;border-radius:999px;background:var(--pill);color:var(--on-pill)}
+.tag.before::before{content:"Before · "}
+.tag.after::before{content:"After · "}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.roles div{border-top:1px solid var(--ink);padding-top:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.roles .label{font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.roles h4{font-size:24px;letter-spacing:-.025em}
+.roles p{font-size:16px;color:var(--muted)}
+.roles q{font-size:17px;line-height:1.45;font-style:italic}
+.decision{display:grid;gap:18px;padding-top:40px}
+.decision h3{margin:0;font-size:clamp(24px,2.6vw,32px);letter-spacing:-.025em;line-height:1.15}
+.decision > figure{border-radius:32px;padding:clamp(18px,3vw,40px);background:linear-gradient(130deg,var(--stage-a),var(--stage-b))}
+.decision > figure img{box-shadow:var(--shadow)}
+.trade{font-size:16.5px;color:var(--muted);padding-top:14px;border-top:1px solid var(--rule)}
+.trade b{color:var(--ink);font-weight:600}
+.tbl-wrap{overflow-x:auto;border-top:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:16px;line-height:1.45;min-width:640px}
+th,td{text-align:left;vertical-align:top;padding:14px 18px 14px 0;border-bottom:1px solid var(--rule)}
+th{font-weight:600;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+td.n{font-family:var(--f-mono);font-size:13.5px;white-space:nowrap}
+.sev{font-size:14px;font-weight:600;white-space:nowrap}
+.sev.c{color:var(--flag)}.sev.m{color:var(--warn)}
+blockquote{margin:16px 0;display:grid;gap:12px}
+blockquote p{font-size:clamp(28px,3.6vw,46px);font-weight:600;letter-spacing:-.035em;line-height:1.08;max-width:20ch}
+blockquote cite{font-style:normal;font-size:15px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.stats div{display:grid;gap:6px;padding-top:16px;border-top:1px solid var(--ink)}
+.stats b{font-size:clamp(52px,6vw,84px);font-weight:600;line-height:.95;letter-spacing:-.05em}
+.stats span{font-size:15.5px;color:var(--muted);line-height:1.4}
+.flow{border-radius:32px;padding:clamp(16px,3vw,40px);background:linear-gradient(130deg,var(--stage-a),var(--stage-b));overflow-x:auto}
+.flow svg{display:block;width:100%;min-width:640px;height:auto}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:0 28px;border-top:1px solid var(--ink)}
+.metrics div{padding:16px 0;border-bottom:1px solid var(--rule);display:grid;gap:4px;align-content:start}
+.metrics b{font-size:17px;font-weight:600}
+.metrics span{font-size:15.5px;color:var(--muted)}
+.slot{border-radius:28px;padding:28px;background:linear-gradient(130deg,var(--stage-a),var(--stage-b));display:grid;gap:8px}
+.slot p{color:var(--muted);font-size:16.5px}
+.next-case{margin-top:96px;padding:40px;border-radius:40px;background:var(--pill);color:var(--on-pill);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.next-case .label{color:inherit;opacity:.6}
+.next-case h3{font-size:clamp(26px,3vw,40px)}
+.next-case .btn{background:var(--on-pill);color:var(--pill)}
+
+
+
+/* left quick navigation */
+.case-body{display:grid;grid-template-columns:230px minmax(0,1fr);gap:56px;margin-top:40px}
+.side{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 24px);align-self:start;display:grid;gap:28px;max-height:calc(100vh - 48px);overflow:auto;padding:4px}
+.pillback{display:inline-flex;align-items:center;gap:12px;justify-self:start;text-decoration:none;font-size:16px;color:var(--muted);padding:10px 18px 10px 10px;border-radius:999px;background:var(--card);box-shadow:0 0 0 1px var(--rule),0 6px 18px -10px rgba(14,15,17,.25);transition:color .15s}
+.pillback span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--bg);color:var(--ink)}
+.pillback:hover{color:var(--ink)}
+.side-label{font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.qnav{list-style:none;margin:0;padding:0;display:grid;gap:4px;position:relative}
+.qnav::before{content:"";position:absolute;left:23px;top:20px;bottom:20px;width:1px;background:var(--rule)}
+.qnav button{position:relative;display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:none;border:0;padding:8px 10px;border-radius:14px;font:inherit;font-size:16.5px;color:var(--faint);cursor:pointer;transition:background .2s,color .2s}
+.qnav button:hover{color:var(--ink)}
+.qnav .n{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--bg-2);box-shadow:0 0 0 1px var(--rule);font-family:var(--f-mono);font-size:11.5px;color:var(--faint);transition:background .2s,color .2s}
+.qnav button[aria-current="true"]{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 0 0 1px var(--rule)}
+.qnav button[aria-current="true"] .n{background:var(--ink);color:var(--bg-2);box-shadow:none}
+.case-main > .chapter:first-child{padding-top:24px}
+.case-main .chapter h2{font-size:clamp(34px,3.8vw,56px)}
+@media (min-width: 901px){ #view-finguard > .back{display:none} }
+@media (max-width: 900px){
+  .case-body{grid-template-columns:1fr;gap:0;margin-top:16px}
+  .side{display:none}
+}
+
+.cv-pages{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cv-pages figure{margin:0}
+.cv-pages img{display:block;width:100%;border-radius:8px;box-shadow:0 0 0 1px var(--rule),0 18px 48px -18px rgba(0,0,0,.25);cursor:zoom-in}
+@media (max-width:900px){.cv-pages{grid-template-columns:1fr}}
+
+.cv-tools{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:4;display:flex;align-items:center;gap:4px;width:max-content;margin:0 auto 16px;padding:5px;border-radius:999px;background:var(--card);box-shadow:0 0 0 1px var(--rule),0 8px 24px -12px rgba(0,0,0,.3)}
+.cv-tools button{border:0;background:none;width:36px;height:36px;border-radius:50%;font-size:18px;color:var(--ink);cursor:pointer}
+.cv-tools button:hover{background:var(--bg)}
+.cv-tools .fit{width:auto;padding:0 12px;font-size:13.5px;font-weight:600}
+.cv-tools span{min-width:52px;text-align:center;font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.cv-scroll{overflow:auto;border-radius:16px;background:color-mix(in srgb,var(--bg) 70%,#888 30%);padding:24px 0;max-height:calc(100vh - 140px);touch-action:pan-x pan-y}
+.cvdoc{width:210mm;margin:0 auto}
+.cvdoc *{box-sizing:border-box;margin:0;padding:0}
+.cvdoc{--ink:#111214;--muted:#5b5f66;--faint:#8a8e95;--rule:#e2e3e0;--accent:#2445c8}
+.cvdoc{font-family:Inter,"Helvetica Neue",Arial,sans-serif;color:var(--ink);font-size:9.4pt;line-height:1.45;-webkit-print-color-adjust:exact}
+.cvdoc a{color:inherit;text-decoration:none}
+.cvdoc .x-page{background:#fff;color:#111214;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 18px 48px -18px rgba(0,0,0,.3);border-radius:4px;margin:0 auto 24px;page-break-after:auto;width:210mm;height:297mm;padding:15mm 15mm 13mm;display:grid;grid-template-columns:53mm 1fr;column-gap:9mm;align-content:start;page-break-after:always;overflow:hidden}
+.cvdoc .x-page:last-child{page-break-after:auto}
+.cvdoc header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:6mm;margin-bottom:6mm;border-bottom:1.2pt solid var(--ink)}
+.cvdoc h1{font-family:"Inter Display",Inter,sans-serif;font-size:25pt;font-weight:700;letter-spacing:-.025em;line-height:1}
+.cvdoc .x-role{font-size:11.5pt;font-weight:500;margin-top:2.2mm}
+.cvdoc .x-contact{text-align:right;font-size:8.6pt;line-height:1.6;color:var(--muted)}
+.cvdoc .x-contact a{color:var(--ink)}
+.cvdoc .x-contact .x-links a{margin-left:3mm;font-weight:600;border-bottom:.6pt solid var(--faint)}
+.cvdoc aside,.cvdoc main{display:flex;flex-direction:column;gap:5.5mm}
+.cvdoc h2{font-size:7.6pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:2mm}
+.cvdoc .x-side p,.cvdoc .x-side li{font-size:8.6pt}
+.cvdoc .x-side ul{list-style:none;display:flex;flex-direction:column;gap:1.1mm}
+.cvdoc .x-side .x-group{margin-bottom:2.6mm}
+.cvdoc .x-side .x-group b{display:block;font-size:8.3pt;font-weight:600;margin-bottom:.6mm}
+.cvdoc .x-side .x-group span{color:var(--muted);font-size:8.4pt;line-height:1.45;display:block}
+.cvdoc .x-item{margin-bottom:2.6mm}
+.cvdoc .x-item b{font-weight:600;font-size:8.7pt;display:block}
+.cvdoc .x-item span{display:block;color:var(--muted);font-size:8.2pt}
+.cvdoc .x-item a{color:var(--accent);font-size:8.2pt}
+.cvdoc .x-summary p{font-size:9.6pt;line-height:1.5}
+.cvdoc .x-job{margin-bottom:4.2mm}
+.cvdoc .x-job:last-child{margin-bottom:0}
+.cvdoc .x-jh{display:flex;justify-content:space-between;align-items:baseline;gap:4mm}
+.cvdoc .x-jh b{font-size:10pt;font-weight:600}
+.cvdoc .x-jh time{font-size:8.4pt;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.cvdoc .x-jsub{font-size:8.6pt;color:var(--muted);margin:.4mm 0 1.4mm}
+.cvdoc ul.x-b{padding-left:3.6mm;display:flex;flex-direction:column;gap:.9mm}
+.cvdoc ul.x-b li{font-size:9pt}
+.cvdoc ul.x-b li::marker{color:var(--faint)}
+.cvdoc .x-proj{display:grid;grid-template-columns:1fr auto;gap:0 4mm;padding:2.2mm 0;border-top:.6pt solid var(--rule)}
+.cvdoc .x-proj:first-of-type{border-top:0;padding-top:0}
+.cvdoc .x-proj b{font-size:9.6pt;font-weight:600}
+.cvdoc .x-proj .x-tag{font-size:8pt;color:var(--muted);text-align:right}
+.cvdoc .x-proj p{grid-column:1/-1;font-size:8.9pt;margin-top:.6mm}
+.cvdoc .x-proj p.x-m{color:var(--muted);font-size:8.4pt}
+.cvdoc .x-proj a.x-l{grid-column:1/-1;color:var(--accent);font-size:8.3pt;margin-top:.4mm}
+.cvdoc .x-small{display:grid;grid-template-columns:1fr 1fr;gap:2.4mm 6mm}
+.cvdoc .x-small div b{font-size:8.9pt;font-weight:600}
+.cvdoc .x-small div span{display:block;font-size:8.3pt;color:var(--muted)}
+.cvdoc .x-small div a{font-size:8.1pt;color:var(--accent)}
+.cvdoc .foot{grid-column:1/-1;align-self:end}
+/* lightbox */
+.chapter figure img,.decision figure img{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(10,11,13,.88);overflow:hidden;touch-action:none;overscroll-behavior:contain}
+.lb .stagebox{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:max(24px,env(safe-area-inset-top,0px)) 16px 80px}
+.lb img{max-width:100%;max-height:100%;width:auto;height:auto;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.5);transform-origin:0 0;cursor:grab;user-select:none;-webkit-user-drag:none;will-change:transform}
+.lb img.drag{cursor:grabbing}
+.lb .x{position:fixed;top:max(16px,env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:#111;font-size:22px;cursor:pointer;z-index:2}
+.lb .ctrl{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;align-items:center;gap:4px;padding:5px;border-radius:999px;background:rgba(255,255,255,.95);box-shadow:0 8px 24px rgba(0,0,0,.3);z-index:2;font-family:var(--f)}
+.lb .ctrl button{border:0;background:none;width:36px;height:36px;border-radius:50%;font-size:18px;color:#111;cursor:pointer}
+.lb .ctrl button:hover{background:#eee}
+.lb .ctrl .fit{width:auto;padding:0 12px;font-size:13.5px;font-weight:600}
+.lb .ctrl span{min-width:52px;text-align:center;font-size:13.5px;color:#333;font-variant-numeric:tabular-nums}
+/* two-column chapters: heading left, text right, exhibits full width */
+.chapter{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;row-gap:24px}
+.chapter > *{grid-column:1 / -1;min-width:0}
+.chapter .col,.decision .col{max-width:none}
+.chapter > .num,.chapter > h2{grid-column:1 / -1}
+.chapter > h2{max-width:22ch;margin-bottom:16px}
+.chapter > h3{grid-column:1;padding-right:48px}
+.chapter > h3{margin-top:32px}
+.chapter > .prose,.chapter > .note,.chapter > .tbl-wrap.col{grid-column:2}
+.chapter > h3 + .prose{margin-top:32px}
+.chapter > h2{position:relative}
+.decision{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px;row-gap:16px}
+.decision > *{grid-column:1 / -1;min-width:0}
+.decision > h3{grid-column:1;grid-row:1 / span 3;align-self:start;padding-right:48px}
+.decision > p,.decision > .trade{grid-column:2}
+.decision > .pair,.decision > figure{grid-column:1 / -1}
+.note{max-width:none}
+.c-hero > .note,.page .note.col{max-width:none}
+blockquote.col{grid-column:1 / -1;max-width:none}
+.facts-grid + .stage-lg{margin-top:28px}
+.chapter > figure,.decision > figure{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:20px}
+.chapter > figure > a,.chapter > figure > img,.decision > figure > a,.decision > figure > img{grid-column:1 / -1}
+.chapter > figure > .cap,.decision > figure > .cap{grid-column:2}
+.decision > figure{padding-bottom:clamp(18px,3vw,32px)}
+@media (max-width: 900px){
+  .chapter,.decision{grid-template-columns:1fr}
+  .chapter > *,.decision > *{grid-column:1 / -1 !important;grid-row:auto !important}
+  .chapter > h3 + .prose{margin-top:0}
+  .chapter > figure,.decision > figure{grid-template-columns:1fr}
+  .chapter > figure > .cap,.decision > figure > .cap{grid-column:1}
+  .chapter > h3,.decision > h3{padding-right:0}
+}
+@media (max-width: 900px){
+  .case-meta,.soon,.about-grid,.pair,.roles,.principles{grid-template-columns:1fr}
+  .block{grid-template-columns:1fr}
+  .facts-grid{grid-template-columns:repeat(3,1fr);gap:18px 20px}
+  .stats{grid-template-columns:1fr 1fr}
+  .metrics,.skills{grid-template-columns:1fr}
+  .stage,.soon .stage{border-radius:24px}
+  .portrait{aspect-ratio:1/1;max-width:420px}
+}
+@media (max-width: 520px){
+  .case-card{border-radius:30px;padding:8px}.case-card > .stage{border-radius:24px}.case-card .case-meta{padding:22px 14px 14px}
+  body{font-size:17px}
+  .bar{flex-direction:column;align-items:flex-start;gap:12px;padding-block:22px}
+  .bar nav{gap:18px;font-size:16px}
+  .facts-grid{grid-template-columns:1fr 1fr}
+  .path > div{grid-template-columns:1fr;gap:4px}
+  .stage{aspect-ratio:4/3.6}
+  .stage .scr-main{width:82%;top:21.5%}
+  .stage .scr-side{width:52%;top:50%}
+  .toc{border-radius:18px}
+}
+
+/* v2 layout (Nov 2026): key-result panel, floating pill nav, one centred reading column */
+.facts-grid{grid-template-columns:1.15fr 1fr 1fr 1fr;grid-auto-rows:auto;gap:0;border:0;padding:8px;margin-top:16px;background:var(--card);border-radius:32px;box-shadow:0 0 0 1px var(--rule)}
+.facts-grid div{padding:18px 22px;gap:6px}
+.facts-grid .key{grid-column:1;grid-row:1 / span 2;background:linear-gradient(130deg,var(--stage-a),var(--stage-b));border-radius:26px;padding:26px;align-content:space-between;gap:16px}
+.facts-grid .key b{font-size:clamp(22px,2.2vw,30px);font-weight:600;letter-spacing:-.02em;line-height:1.12}
+.facts-grid .label{font-size:12px;color:var(--faint)}
+.facts-grid b{font-size:17px}
+.case-body{grid-template-columns:minmax(0,1fr);gap:0;max-width:1000px;margin-inline:auto}
+.side .pillback,.side .side-label{display:none}
+.qnav{display:flex;gap:2px;padding:6px;max-width:100%;overflow-x:auto;scrollbar-width:none;background:color-mix(in srgb,var(--card) 90%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:999px;box-shadow:0 0 0 1px var(--rule),0 10px 30px -14px rgba(0,0,0,.3)}
+.qnav::-webkit-scrollbar{display:none}
+.qnav::before{display:none}
+.qnav li{flex:none}
+.qnav button{border-radius:999px;padding:9px 12px;font-size:14px;white-space:nowrap;color:var(--muted)}
+.qnav button:hover{color:var(--ink);background:var(--bg)}
+.qnav .n{display:none}
+.qnav button[aria-current="true"]{background:var(--ink);color:var(--bg-2);box-shadow:none;font-weight:600}
+@media (min-width: 901px){
+  .side{position:sticky;top:16px;z-index:10;display:flex;justify-content:center;max-height:none;overflow:visible;padding:0;margin-bottom:8px}
+  #view-finguard > .back{display:inline-flex}
+}
+.chapter,.decision{grid-template-columns:minmax(0,1fr)}
+.chapter > *,.decision > *{grid-column:1 / -1 !important;grid-row:auto !important}
+.chapter > h3,.decision > h3{padding-right:0}
+.chapter > .prose,.decision > p,.decision > .trade{font-size:19px}
+.case-main .prose,.case-main .prose p,.case-main .decision p,.case-main .trade,.case-main .note,.case-main .col,.case-main ul,.case-main li{max-width:none}
+.chapter > figure,.decision > figure{grid-template-columns:minmax(0,1fr)}
+.chapter > figure > .cap,.decision > figure > .cap{grid-column:1 !important}
+@media (max-width: 900px){
+  .facts-grid{grid-template-columns:1fr 1fr}
+  .facts-grid .key{grid-column:1 / -1;grid-row:auto}
+  .facts-grid div{padding:14px 16px}
+}
+:root{--surface:var(--card);--flag-soft:color-mix(in srgb,var(--flag) 12%,var(--card));--accent-soft:color-mix(in srgb,var(--accent) 12%,var(--card))}
+.back{display:inline-flex;align-items:center;gap:10px;justify-self:start;align-self:start;width:max-content;text-decoration:none;font-size:15px;font-weight:500;color:var(--ink);padding:6px 16px 6px 6px;border-radius:999px;background:var(--card);box-shadow:0 0 0 1px var(--rule),0 6px 18px -12px rgba(14,15,17,.3);transition:box-shadow .2s,transform .2s}
+.back span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--bg-2);font-size:15px;transition:transform .2s}
+.back:hover{color:var(--ink);box-shadow:0 0 0 1px var(--ink),0 8px 22px -12px rgba(14,15,17,.35)}
+.back:hover span{transform:translateX(-3px)}
+figure img.bare{background:none!important;box-shadow:none!important;border-radius:0!important;filter:drop-shadow(0 18px 40px rgba(8,10,20,.28))}
+.flink{display:inline-flex;align-items:center;gap:8px;height:34px;margin-top:2px;padding:0 4px 0 14px;border-radius:999px;background:transparent;color:var(--ink);font-size:15px;font-weight:500;text-decoration:none;white-space:nowrap;box-shadow:inset 0 0 0 1px var(--rule);transition:background .2s,box-shadow .2s}
+.flink .fa{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--bg);color:var(--ink);transition:transform .2s}
+.flink .fa svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.flink:hover{background:var(--bg);box-shadow:inset 0 0 0 1px var(--faint)}
+.flink:hover .fa{transform:rotate(45deg);background:var(--card)}
+.stage .cover-full{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.case-card:hover .cover-full{transform:scale(1.015)}
+.decision > figure:not(:has(.cap)){padding-bottom:clamp(18px,3vw,40px)}
+.decision > figure:not(:has(.cap)) > img,.decision > figure:not(:has(.cap)) > a{align-self:center}
+</style>
+
+<div class="page">
+<div class="frame">
+  <header class="bar">
+    <a class="me" href="#home">Kateryna Lenska</a>
+    <nav aria-label="Main">
+      <a href="#home" data-nav="home">Cases</a>
+      <a href="#about" data-nav="about">About</a>
+      <a href="#resume" data-nav="resume" data-resume>Resume</a>
+      <a class="ext" href="https://www.linkedin.com/in/kateryna-lenska/" target="_blank" rel="noopener">LinkedIn</a>
+      <button class="theme" id="theme" type="button" aria-label="Switch to dark theme"><svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    </nav>
+  </header>
+
+  <main id="view-home">
+    <section class="head">
+      <span class="eyebrow">Selected work</span>
+      <h1>Turning complex workflows into clear products.</h1>
+      <p class="lede">I design B2B, marketplace and learning platforms with many roles, states and steps: payment approvals, a seller’s search for answers, a learner’s path to a verified certificate. Each case shows the problem, the decisions I made and the evidence behind them, and says plainly where that evidence stops.</p>
+    </section>
+
+    <div class="cases">
+      <a class="case-card" href="#odds">
+        <div class="stage vt-odds" style="background:radial-gradient(60% 80% at 0% 0%,rgba(79,124,255,.55),transparent 70%),linear-gradient(120deg,#0B0F1C,#05070C)">
+          <img class="cover-full" src="odds-cover3.webp" alt="Odds trading terminal on a tablet-style screen" loading="eager">
+        </div>
+        <div class="case-meta">
+          <h2>Odds: a prediction-market terminal you can trust</h2>
+          <p>A concept trading terminal for prediction markets: dense data for active traders, and an order ticket that says in plain words what you pay, what you can win and what happens if the price moves.</p>
+          <div class="tags"><span>Self-initiated concept · 2026</span><span>Fintech · Crypto</span><span>Coded prototype</span><span class="go">Read the case →</span></div>
+        </div>
+      </a>
+
+      <a class="case-card" href="#finguard">
+        <div class="stage vt-fg">
+          <img class="scr scr-main" src="fg4-overview.webp" alt="FinGuard exception details for an AP specialist" loading="eager">
+          <img class="scr scr-side" src="fg4-approval.webp" alt="FinGuard approval details with decision summary" loading="lazy">
+        </div>
+        <div class="case-meta">
+          <h2>FinGuard: from flag to decision</h2>
+          <p>An AI-assisted workspace where accounts payable teams investigate risky invoices, record evidence and hand a clear decision to the approver.</p>
+          <div class="tags"><span>Self-initiated · 0→1</span><span>6 usability sessions</span><span>3 iterations</span><span class="go">Read the case →</span></div>
+        </div>
+      </a>
+
+      <a class="case-card" href="#koh">
+        <div class="stage stage-koh vt-koh">
+          <img class="scr scr-main" src="koh-cov-main.webp" alt="Kyiv Educational Hub home page" loading="lazy">
+          <img class="scr scr-side" src="koh-cov-side.webp" alt="Video lesson with the course map in a side panel" loading="lazy">
+        </div>
+        <div class="case-meta">
+          <h2>Kyiv Educational Hub: from course list to verified certificate</h2>
+          <p>A redesign of a public learning platform built in 2019. I rebuilt the structure around the learner’s path and designed the features the old interface had no room for.</p>
+          <div class="tags"><span>Mavericks Agency · 2025</span><span>Sole designer · 3 months</span><span>In development</span><span class="go">Read the case →</span></div>
+        </div>
+      </a>
+
+      <a class="case-card" href="#olx">
+        <div class="stage stage-olx vt-olx">
+          <img class="scr scr-main" src="olx-cov-side.webp" alt="OLX Jobs page for recruiters" loading="lazy">
+          <img class="scr scr-side" src="olx-cov-side2.webp" alt="Smart search results with type labels and popular queries" loading="lazy">
+        </div>
+        <div class="case-meta">
+          <h2>OLX for Business: from scattered pages to answers</h2>
+          <p>A redesign of the portal where companies buy OLX business tools: a smart search with an AI assistant, price and demand analytics for sellers, and package pages that are easy to compare.</p>
+          <div class="tags"><span>Mavericks Agency · OLX</span><span>Sole designer</span><span>Search + AI assistant</span><span class="go">Read the case →</span></div>
+        </div>
+      </a>
+      <a class="case-card" href="#audit">
+        <div class="stage vt-aud">
+          <img class="scr scr-main" src="audit-res-total.webp" alt="UX audit slide with the revenue forecast" loading="lazy">
+          <img class="scr scr-side" src="audit-sheet-conc.webp" alt="Audit table, Conclusions tab" loading="lazy">
+        </div>
+        <div class="case-meta">
+          <h2>ZELENA: a UX audit that speaks in money</h2>
+          <p>An expert audit of a Kyiv gift and flower e-commerce store: 35 hypotheses scored with ICE, a table for the team, and an executive summary that shows the business benefit in numbers.</p>
+          <div class="tags"><span>Mavericks Agency · 2026</span><span>35 hypotheses</span><span>+17–33% revenue forecast</span><span class="go">Read the case →</span></div>
+        </div>
+      </a>
+
+    </div>
+    <footer class="foot"><span>Kateryna Lenska · Product designer</span><span>2026</span></footer>
+  </main>
+
+  <main id="view-about" hidden>
+    <section class="head">
+      <span class="eyebrow">About</span>
+      <h1>From websites to products.</h1>
+    </section>
+    <div class="about-grid">
+      <img class="portrait" src="portrait.webp" alt="Kateryna Lenska">
+      <div class="about-copy">
+        <p>I’m Kateryna, a UI/UX designer and Webflow developer from Kyiv, currently based in Poltava, Ukraine, and working remotely. Until October 2026 I was a Middle UI/UX Designer at Mavericks Agency, where I designed client platforms and websites, from OLX for Business to a public learning platform, and built many of them in Webflow.</p>
+        <p>Agency work taught me to start from a business goal, to build what I design in Webflow and to ship on deadline. Before that I worked on UX for a non-profit, finished the Sigma Software University UI/UX internship, and designed promotional graphics for a fitness club.</p>
+        <p>Now I’m moving into product design for complex B2B and learning platforms: workflows with several roles, statuses that must be unambiguous, audit trails, and decisions people make under time pressure. I test with real users before I polish, and I prototype in code so the logic can be clicked through.</p>
+        <div class="btns"><a class="btn" href="#resume" data-resume>Resume</a><a class="btn ghost" href="https://www.linkedin.com/in/kateryna-lenska/" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+      </div>
+    </div>
+
+    <section class="block">
+      <h2>Path</h2>
+      <div class="path">
+        <div><span class="yr">2026</span><div><h3>FinGuard · self-initiated product case</h3><p>A 0→1 fintech product: research, IA, three prototype iterations, six usability sessions.</p></div></div>
+        <div><span class="yr">2025 – 2026</span><div><h3>UI/UX Designer → Middle UI/UX Designer · Mavericks Agency</h3><p>Full-time, Kyiv, until Oct 2026. Client platforms and websites, including OLX for Business and Kyiv Educational Hub; Webflow development. Promoted to Middle in April 2026.</p></div></div>
+        <div><span class="yr">2024 – 2025</span><div><h3>UI/UX Designer · Sigma Software University</h3><p>Internship, Nov 2024 – Jan 2025. Real-case UX/UI projects; recognised as the strongest mentee on the team.</p></div></div>
+        <div><span class="yr">2024 – 2025</span><div><h3>UX Designer · PLAN B 2030 e.V.</h3><p>Part-time, remote, Oct 2024 – Jan 2025. UX research and design guidelines.</p></div></div>
+        <div><span class="yr">2024</span><div><h3>UI/UX Designer · Gulls &amp; Galley</h3><p>Freelance, Jul – Sep 2024. A full website UI for a commercial client, from wireframes and interactive prototypes to final design.</p></div></div>
+        <div><span class="yr">2023 – 2025</span><div><h3>Advertising Graphic Designer · EveryDay Fitness</h3><p>Freelance, Dec 2023 – Mar 2025. Promotional materials and digital banners.</p></div></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>How I work</h2>
+      <div class="principles">
+        <div><h3>Evidence before opinion</h3><p>I run moderated sessions with people who do the job and report what they did, not what I hoped.</p></div>
+        <div><h3>Prototypes that behave</h3><p>I build prototypes in code with AI tools, so states and handoffs can be tested end to end. The decisions stay mine.</p></div>
+        <div><h3>Every state has a next step</h3><p>Rejected, blocked, failed: in finance tools the unhappy paths are daily work.</p></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Skills</h2>
+      <ul class="skills">
+        <li>Discovery and competitor analysis</li><li>Usability testing and synthesis</li>
+        <li>Information architecture and user flows</li><li>Complex B2B workflows and roles</li>
+        <li>Figma: variables, components, auto layout</li><li>Prototyping in code with Claude and Figma Make</li>
+        <li>Web design, Webflow, HTML/CSS</li><li>3D in Spline: materials, lighting, brand visuals</li><li>Accessibility audits (WCAG)</li><li>Writing specs and edge cases</li>
+      </ul>
+    </section>
+
+    <section class="block" id="contact">
+      <h2>Contact</h2>
+      <div>
+        <div class="contact-line"><span id="mail">kateryna.lenska.uiux@gmail.com</span><button class="btn ghost" id="copy" type="button">Copy</button></div>
+        <p id="copied" aria-live="polite"></p>
+      </div>
+    </section>
+    <footer class="foot"><span>Kateryna Lenska · Product designer</span><span>2026</span></footer>
+  </main>
+
+  <main id="view-resume" hidden>
+    <a class="back" href="#about"><span aria-hidden="true">←</span>About</a>
+    <section class="head" style="padding-block:32px 24px"><span class="eyebrow">Resume</span><h1>Kateryna Lenska</h1><p class="lede">Product Designer · UI/UX · Webflow. Pinch, Ctrl + scroll or the buttons zoom the resume only.</p></section>
+    <div class="cv-tools" role="toolbar" aria-label="Resume zoom"><button type="button" data-cz="out" aria-label="Zoom out">−</button><span id="cv-pct">100%</span><button type="button" data-cz="in" aria-label="Zoom in">+</button><button type="button" class="fit" data-cz="fit">100%</button></div>
+    <div class="cv-scroll" id="cv-scroll"><div class="cvdoc" id="cvdoc">
+
+<section class="x-page">
+  <header>
+    <div><h1>Kateryna Lenska</h1><div class="x-role">Product Designer · UI/UX · AI-assisted design &amp; build</div></div>
+    <div class="x-contact">
+      Poltava, Ukraine · Remote, EU / US<br>
+      <a href="mailto:kateryna.lenska.uiux@gmail.com">kateryna.lenska.uiux@gmail.com</a><br>+380 95 634 68 00<br>
+      <span class="x-links"><a href="https://claude.ai/artifact/Gm5wiEhmFehYLWexx3aceW">Portfolio</a><a href="https://www.linkedin.com/in/kateryna-lenska/">LinkedIn</a><a href="https://www.behance.net/KaterynaLenskaa">Behance</a><a href="https://t.me/LenskaKateryna">Telegram</a></span>
+    </div>
+  </header>
+
+  <aside class="x-side">
+    <div>
+      <h2>Skills</h2>
+      <div class="x-group"><b>AI workflow</b><span>End-to-end websites built with AI (Claude), coded interactive prototypes, AI for research synthesis and exploration; I review and own every decision</span></div>
+      <div class="x-group"><b>Research</b><span>User interviews, usability testing, heuristic evaluation, competitor analysis, stakeholder interviews</span></div>
+      <div class="x-group"><b>Product &amp; UX</b><span>Information architecture, user flows, CJM, wireframing, prototyping, edge cases and states</span></div>
+      <div class="x-group"><b>UI</b><span>Design systems and components, responsive and adaptive layouts, typography, colour, HIG, Material Design</span></div>
+      <div class="x-group"><b>Accessibility</b><span>WCAG audits and fixes</span></div>
+      <div class="x-group"><b>Build</b><span>Webflow (design and development), HTML/CSS, Figma Make</span></div>
+    </div>
+    <div>
+      <h2>Tools</h2>
+      <p>Figma, Claude, Figma Make, Webflow, Spline (3D), Perplexity, Jira, Maze, Jitter, Adobe Photoshop, Adobe Illustrator</p>
+    </div>
+    <div>
+      <h2>Languages</h2>
+      <ul><li>English — B2</li><li>Ukrainian — native</li></ul>
+    </div>
+    <div>
+      <h2>Courses</h2>
+      <div class="x-item"><b>UI/UX Design</b><span>Mate academy · 2023 – 2025</span><a href="https://drive.google.com/file/d/1Zhik2C8Wks2PbIjC_AoIsQi3Mmi0MMs6/view?usp=drive_link">View certificate →</a></div>
+      <div class="x-item"><b>UI/UX Design Internship</b><span>Sigma Software University · 2024 – 2025</span><a href="https://drive.google.com/file/d/12brLqhMXI7stS6KFJWO9qth7ouIucvXG/view?usp=sharing">View certificate →</a></div>
+      <div class="x-item"><b>Complete Conversion Rate Optimization Course</b><span>Udemy</span><a href="https://www.udemy.com/course/complete-conversion-optimization-course/">View course →</a></div>
+    </div>
+  </aside>
+
+  <main>
+    <div class="x-summary">
+      <h2>Summary</h2>
+      <p>Product designer with 3+ years in web and mobile design, moving from agency work into complex B2B products. I work AI-first: I build end-to-end websites and fully interactive, coded prototypes with AI tools, so ideas can be clicked through and tested in days, not weeks — while research, logic and every design decision stay mine. I design workflows with several roles, statuses and handoffs, check them with real users, and build what I design in Webflow, so I know what it takes to ship.</p>
+    </div>
+    <div>
+      <h2>Experience</h2>
+      <div class="x-job">
+        <div class="x-jh"><b>Middle UI/UX Designer · Mavericks Agency</b><time>Jan 2025 – Oct 2026</time></div>
+        <div class="x-jsub">Web &amp; digital agency, Kyiv · UI/UX Designer, promoted to Middle in April 2026</div>
+        <ul class="x-b">
+          <li>Designed and delivered 10 full-cycle projects from concept to client handoff: platform redesigns, large websites (15+ pages) and landing pages.</li>
+          <li>Sole designer of the Kyiv Educational Hub redesign (3 months): rebuilt the information architecture around the learner’s path and designed courses, tests, a career roadmap, profile and certificate verification for desktop, tablet and mobile.</li>
+          <li>Sole designer of the OLX for Business portal (business.olx.ua): a smart search with an AI assistant and all its states, category price and demand analytics, package comparison and pages explaining new payment rules, for desktop, tablet and mobile.</li>
+          <li>Ran comparative user interviews on two course-page variants; the chosen layout helped users orient themselves faster.</li>
+          <li>Designed and built client websites and landing pages in Webflow; introduced AI into the workflow to build sites end to end and turn designs into coded, interactive prototypes for client reviews.</li>
+          <li>Conducted WCAG audits and fixed accessibility and usability issues on client websites.</li>
+          <li>Presented concepts to international clients and PMs, gathered feedback and iterated; created brand identities and the agency’s Behance case studies.</li>
+        </ul>
+      </div>
+      <div class="x-job">
+        <div class="x-jh"><b>UI/UX Design Intern · Sigma Software University</b><time>Nov 2024 – Jan 2025</time></div>
+        <ul class="x-b">
+          <li>Recognised as the strongest mentee on the team in an intensive internship on real-case projects.</li>
+          <li>Ran heuristic evaluations, IA analysis, user flows and usability testing; designed a mobile app and its promo landing page.</li>
+          <li>Worked in Scrum and Kanban with a cross-functional team.</li>
+        </ul>
+      </div>
+      <div class="x-job">
+        <div class="x-jh"><b>UI/UX Designer · PlanB 2030</b><time>Sep 2024 – Dec 2024</time></div>
+        <div class="x-jsub">International GreenTech project, German digital platform, remote</div>
+        <ul class="x-b">
+          <li>Led UX improvements based on user interviews and usability testing; designed wireframes, prototypes and final UI.</li>
+          <li>Worked with developers and stakeholders in an English-speaking team.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</section>
+
+<section class="x-page">
+  <aside class="x-side">
+    <div>
+      <h2>Education</h2>
+      <div class="x-item"><b>Master’s, Physical Culture and Sports</b><span>National University of Ukraine on Physical Education and Sport · 2015 – 2020</span></div>
+      <div class="x-item"><b>Bachelor’s, Philology</b><span>Kyiv National Linguistic University · 2016 – 2020</span></div>
+    </div>
+    <div>
+      <h2>Also</h2>
+      <div class="x-item"><b>Graphic &amp; Advertising Designer</b><span>Freelance · Dec 2023 – Mar 2025</span><span>30+ digital banners, outdoor ads and social media assets for a fitness club.</span></div>
+    </div>
+  </aside>
+  <main>
+    <div>
+      <div class="x-job">
+        <div class="x-jh"><b>UI/UX Designer · Gulls &amp; Galley</b><time>Jul 2024 – Sep 2024</time></div>
+        <div class="x-jsub">E-commerce website, freelance</div>
+        <ul class="x-b">
+          <li>Designed a full website from wireframes and interactive prototypes to final UI, with a design system of reusable components.</li>
+          <li>Worked with developers and marketing; optimised mobile, tablet and desktop layouts for responsiveness and accessibility.</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h2>Selected projects</h2>
+      <div class="x-proj"><b>FinGuard</b><span class="x-tag">Self-initiated · B2B fintech · 2026</span>
+        <p>AI-assisted workspace where accounts payable teams investigate risky invoices and hand a clear decision to the approver.</p>
+        <p class="x-m">6 moderated usability sessions in two rounds · 40-finding heuristic review · 3 prototype iterations · coded prototype and accessible HTML/CSS handoff</p>
+        <a class="x-l" href="https://claude.ai/artifact/Gm5wiEhmFehYLWexx3aceW">Read the case study →</a></div>
+      <div class="x-proj"><b>Kyiv Educational Hub</b><span class="x-tag">Mavericks Agency · EdTech · 2025</span>
+        <p>Redesign of a public learning platform: learner path from catalog to a certificate employers can verify, career roadmap, tests and company courses.</p>
+        <p class="x-m">Sole designer · 3 months · comparative user interviews · design system · 3 breakpoints · in development</p>
+        <a class="x-l" href="https://claude.ai/artifact/Gm5wiEhmFehYLWexx3aceW">Read the case study →</a></div>
+      <div class="x-proj"><b>OLX for Business</b><span class="x-tag">Mavericks Agency · Marketplace B2B</span>
+        <p>Redesign of the portal where companies buy OLX business tools: smart search with an AI assistant, price and demand analytics for sellers, package comparison.</p>
+        <p class="x-m">Sole designer · new feature from a PM brief · every search and AI state · desktop, tablet, mobile</p>
+        <a class="x-l" href="https://claude.ai/artifact/Gm5wiEhmFehYLWexx3aceW">Read the case study →</a></div>
+      <div class="x-proj"><b>ZELENA UX audit</b><span class="x-tag">Agency client · E-commerce · 2026</span>
+        <p>UX audit of a Kyiv gift and flower store: 35 ICE-scored hypotheses across the purchase path, with an executive summary of the business benefit in numbers.</p>
+        <p class="x-m">Desktop + mobile · 48-slide deck and team table · revenue forecast +17–33% (Baymard-based) · ~40 hours</p>
+        <a class="x-l" href="https://claude.ai/artifact/Gm5wiEhmFehYLWexx3aceW">Read the case study →</a></div>
+    </div>
+    <div>
+      <h2>More work</h2>
+      <div class="x-small">
+        <div><b>Sviy Production</b><span>Cinematic website and visual identity for a video production studio</span><a href="https://www.behance.net/gallery/241711915/SVIY-Production-Cinematic-UIUX-Brand-Identity">View →</a></div>
+        <div><b>Legal IT</b><span>Corporate website for a legal tech company</span><a href="https://www.behance.net/gallery/234636309/Legal-IT-Group">View →</a></div>
+        <div><b>BudgSave</b><span>Budgeting app for tracking expenses</span><a href="https://www.behance.net/gallery/203686135/Streamlining-Personal-Finance-UIUX-Design">View →</a></div>
+        <div><b>Plantly</b><span>AI-driven plant care mobile app</span><a href="https://www.behance.net/gallery/218802123/Plantly-Smart-Plant-Care-App-Mobile-App-UXUI">View →</a></div>
+        <div><b>ARCHI VISTA</b><span>Website for an architectural firm</span><a href="https://www.behance.net/gallery/206041769/ARCHI-VISTA-Creative-Web-Design">View →</a></div>
+        <div><b>FitQuest</b><span>Fitness app with personalised workouts</span><a href="https://www.behance.net/gallery/201756519/Fitness-App-FitQuest-UXUI-Case-Study">View →</a></div>
+      </div>
+    </div>
+  </main>
+</section>
+</div></div>
+    <footer class="foot"><span>Kateryna Lenska · Product designer</span><span>kateryna.lenska.uiux@gmail.com</span></footer>
+  </main>
+
+    <main id="view-finguard" hidden>
+    <a class="back" href="#home"><span aria-hidden="true">←</span>All cases</a>
+
+    <header class="c-hero">
+      <span class="label">FinGuard · Self-initiated · 0→1 B2B fintech</span>
+      <h1>From flag to decision</h1>
+      <p class="lede">Accounts payable tools are good at catching a suspicious invoice. FinGuard is about the next hour: who investigates it, what counts as proof, and how the approver gets a decision they can trust.</p>
+      <div class="facts-grid">
+        <div class="key"><span class="label">Research</span><b>6 moderated sessions, 2 rounds</b></div>
+        <div><span class="label">Role</span><b>Product designer, solo</b></div>
+        <div><span class="label">Scope</span><b>Research, IA, flows, UI, coded prototype</b></div>
+        <div><span class="label">Platform</span><b>Desktop web app</b></div>
+        <div><span class="label">Iterations</span><b>3 prototype versions</b></div>
+        <div><span class="label">Status</span><b>Concept, not in production</b></div>
+        <div><span class="label">Prototype</span><b><a class="flink" href="https://claude.ai/artifact/LWD2SdbBpPFFKDdP7BGfab" target="_blank" rel="noopener">Open prototype<span class="fa" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></a></b></div>
+      </div>
+      <div class="stage stage-lg vt-fg" aria-label="FinGuard screens">
+        <img class="scr scr-main" src="fg4-overview.webp" alt="Exception details for INV-10423 from Nova Logistics: €24,800, invoice due tomorrow, three risk signals and an AI assessment">
+        <img class="scr scr-side" src="fg4-approval.webp" alt="Approval details with decision summary for the CFO" loading="lazy">
+      </div>
+    </header>
+
+    <div class="note col">
+      <span class="label">About the evidence</span>
+      <p>This is a self-initiated project. The usability findings come from six real moderated sessions with accounting professionals. Version 3 applies those findings and has not been tested with users. The screens below show it in its final visual design. The screens show v4, a visual refresh of v3: the same flows and states with a new type, colour and component system. Nothing here has run in production, so I list the metrics I would measure instead of results.</p>
+    </div>
+
+    <div class="case-body">
+      <aside class="side" aria-label="Case study navigation">
+        <a class="pillback" href="#home"><span aria-hidden="true">←</span>Back to cases</a>
+        <span class="side-label">Quick navigation</span>
+        <ol class="qnav"><li><button data-go="c-problem"><span class="n">01</span><span class="t">Problem</span></button></li><li><button data-go="c-users"><span class="n">02</span><span class="t">Users</span></button></li><li><button data-go="c-structure"><span class="n">03</span><span class="t">Structure</span></button></li><li><button data-go="c-decisions"><span class="n">04</span><span class="t">Key decisions</span></button></li><li><button data-go="c-testing"><span class="n">05</span><span class="t">Testing</span></button></li><li><button data-go="c-edges"><span class="n">06</span><span class="t">Edge cases</span></button></li><li><button data-go="c-outcome"><span class="n">07</span><span class="t">Outcome</span></button></li><li><button data-go="c-reflect"><span class="n">08</span><span class="t">What I learned</span></button></li></ol>
+      </aside>
+      <div class="case-main">
+
+    <section class="chapter" id="c-problem">
+      <span class="num">01 · Problem</span>
+      <h2>Detection is solved. The work after it isn’t.</h2>
+      <div class="prose col">
+        <p>I compared Ramp, Tipalti, Stampli, Airbase and Basware across twelve capabilities, from invoice capture to audit trail. Capture, PO matching, approval routing and fraud signals are mature in all of them. Basware comes closest to my idea: it explains each exception with a reason, evidence and a recommended action.</p>
+      </div>
+      <figure><a href="a-competitors.webp" target="_blank" rel="noopener"><img src="a-competitors.webp" alt="Competitor analysis table comparing Ramp, Tipalti, Stampli, Airbase and Basware, with six key findings" loading="lazy"></a><figcaption class="cap">Competitor analysis and key findings. The opportunity I took from it: “How might we help finance teams prioritize, investigate and resolve complex payment exceptions while keeping humans in control of AI-assisted decisions?”</figcaption></figure>
+      <div class="prose col">
+        <p>The gap is what happens after the flag. The specialist pulls context from the ERP, a spreadsheet, email and Slack, calls the vendor, and writes a note that the approver may or may not read. Ownership, proof and the final decision are scattered across tools.</p>
+        <p><strong>Constraints.</strong> I worked alone and without a budget, so participants came from my own network of accountants rather than AP specialists. There was no real company data, so I invented one company and kept every screen consistent with it. I chose to build the prototype in code so every state could be clicked through, which meant keeping the scope to two roles.</p>
+        <p>To keep the design concrete, I worked with one fictional company and one exception throughout.</p>
+      </div>
+      <div class="tbl-wrap col"><table style="min-width:0">
+        <tbody>
+          <tr><td style="width:40%"><span class="label">Company</span></td><td>Northstar Commerce · 200 employees · ~600 vendors · ~2,000 invoices a month</td></tr>
+          <tr><td><span class="label">Exception</span></td><td>Nova Logistics · <span class="mono">INV-10423</span> · <span class="mono">€24,800</span> · due tomorrow</td></tr>
+          <tr><td><span class="label">Signals</span></td><td>Bank details changed 3 days ago · amount 47% above the 6-month average · €1,300 more than PO-77821</td></tr>
+        </tbody>
+      </table></div>
+      <div class="prose col">
+        <p><strong>Value proposition:</strong> FinGuard helps finance teams investigate and resolve invoice and payment risks before approval. It sits next to the ERP and the bank. It does not replace them.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-users">
+      <span class="num">02 · Users</span>
+      <h2>Three people touch one invoice, and each needs a different answer.</h2>
+      <div class="prose col"><p>These are proto-personas built from desk research, not validated by interviews. What mattered most was the handoff between them.</p></div>
+      <div class="roles">
+        <div><span class="label">Investigates · primary</span><h4>Emma, AP Specialist</h4><q>I need to understand what’s wrong, what needs my attention first, and what I should do next.</q><p>Works in SAP, Excel and Outlook. Needs a prioritised queue, the reason for each flag and a clear next action.</p></div>
+        <div><span class="label">Takes escalations</span><h4>Daniel, Finance Manager</h4><q>I need to know where the problems are before they become payment delays.</q><p>Needs ownership, status and an audit trail he can reconstruct later.</p></div>
+        <div><span class="label">Decides</span><h4>Sophia, CFO / Approver</h4><q>Don’t give me another alert. Give me enough context to decide quickly.</q><p>Needs a short summary: what was flagged, what was verified, what is still open.</p></div>
+      </div>
+      <figure><a href="a-persona.webp" target="_blank" rel="noopener"><img src="a-persona.webp" alt="Proto-persona of Emma, AP Specialist: goals, jobs to be done, pain points, tools" loading="lazy"></a><figcaption class="cap">Proto-persona for the primary user. Daniel and Sophia have their own.</figcaption></figure>
+      <div class="prose col"><p>The hero workflow follows that chain: <strong>Detect → Explain → Investigate → Resolve → Approve.</strong></p></div>
+    </section>
+
+    <section class="chapter" id="c-structure">
+      <span class="num">03 · Structure</span>
+      <h2>I mapped the product before drawing a single screen.</h2>
+      <div class="prose col">
+        <p>I kept three maps apart on purpose. The mind map lists product areas and features. The information architecture fixes navigation and hierarchy. The user flow holds statuses, decisions, loops and handoffs between roles. Mixing them in one diagram hides the decisions that matter.</p>
+        <p>Two structural choices came out of this. Exception details are five sibling tabs (Overview, Risk Review, Investigation, Evidence, Activity), so a specialist never loses the invoice while digging. Approval Details is a separate screen under Approvals, not a sixth tab, because the approver has a different job and should not wade through the investigation.</p>
+      </div>
+      <div class="pair">
+        <figure><a href="a-mindmap.webp" target="_blank" rel="noopener"><img class="tall" src="a-mindmap.webp" alt="Mind map of FinGuard product areas: overview, invoices, exceptions, approvals, payments, vendors, activity, settings" loading="lazy"></a><figcaption class="cap">Mind map: eight product areas and their features.</figcaption></figure>
+        <figure><a href="a-ia.webp" target="_blank" rel="noopener"><img src="a-ia.webp" alt="Information architecture: sign in, main navigation with eight sections, exception details with five tabs" loading="lazy"></a><figcaption class="cap">Information architecture. Exception details branch into five sibling tabs.</figcaption></figure>
+      </div>
+      <figure><a href="a-userflow.webp" target="_blank" rel="noopener"><img src="a-userflow.webp" alt="User flow from invoice received through automated checks, investigation, resolution and approval to payment approved or rejected" loading="lazy"></a><figcaption class="cap">The first user flow: invoice received → automated checks → investigation → approval. Testing later showed what it was missing: what happens after a rejection, a block or a failed transfer (see 06).</figcaption></figure>
+      <figure class="wide"><img src="fg-wireframes.webp" alt="Grayscale wireframes of FinGuard: resolve exception, activity, approval details, evidence" loading="lazy"><figcaption class="cap">Wireframes of the core screens, before colour and visual design: resolving an exception, the activity log, approval details and evidence. Structure and content were settled here first.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="c-decisions">
+      <span class="num">04 · Key decisions</span>
+      <h2>Trust comes from showing who checked what.</h2>
+
+      <div class="decision col">
+        <h3>1. AI recommends. People decide.</h3>
+        <p>The AI flags signals and explains why they matter together, and every assessment says what data it used. It never approves, blocks or closes an exception. A participant in round 2 named this as the thing she liked most: “good that it doesn’t have much power.”</p>
+        <p class="trade"><b>Trade-off.</b> Auto-blocking risky payments would be faster. I chose accountability: someone must be able to explain every decision to an auditor.</p>
+      </div>
+
+      <div class="decision">
+        <h3>2. Risk level and check state are two different things.</h3>
+        <p class="col">In v1 every signal was a red pill, before and after anyone checked it. Participants asked whether all signals were equally serious and who had confirmed them. In v3 the signal keeps the same warning style, and a separate status tag beside it shows its check state: needs review, in review, verified or not verified, with who checked it and how on hover. Green now means only “verified”, never “low risk”.</p>
+        <div class="pair">
+          <figure><span class="tag before">v1</span><img src="v1-flagged.webp" alt="Version 1: three identical red risk signals" loading="lazy"><figcaption class="cap">v1. Three identical red signals. Nothing says what has been checked.</figcaption></figure>
+          <figure><span class="tag after">v3</span><img src="fg4-flagged.webp" alt="Version 3: the same warning signals, each with a status tag; one is verified, with a count of verified signals" loading="lazy"><figcaption class="cap">v3. The signals keep their warning style; a status tag beside each says whether it is in review, verified or not verified, and the count shows progress.</figcaption></figure>
+        </div>
+        <p class="trade col"><b>Trade-off.</b> All signals share one warning style, so severity isn’t visible at a glance; it sits in the tooltip and on the Risk Review tab. I accepted that, because the question people asked in testing was “has anyone checked this?”, and in a payment tool green must never be read as “safe to pay”.</p>
+      </div>
+
+      <div class="decision">
+        <h3>3. Resolving needs proof. Exceptions need a reason.</h3>
+        <p class="col">In v1, Resolve opened with “Investigation status: Completed” and “4 of 4 verified” before the vendor had confirmed anything. All four round-1 participants hesitated here. Now Resolve stays locked until the required steps are done. Emma can still resolve early, but only “with exception”: she writes why, and the approver sees it. There are four outcomes instead of one: <em>Verified — safe to proceed</em>, <em>Verified with conditions</em>, <em>Escalated for further review</em>, <em>Not verified — do not pay</em>.</p>
+        <div class="pair">
+          <figure><span class="tag before">v1</span><img src="v1-resolve.webp" alt="Version 1 Resolve screen claiming investigation completed and evidence verified" loading="lazy"><figcaption class="cap">v1. Everything reads as complete, even when it isn’t.</figcaption></figure>
+          <figure><span class="tag after">v3</span><img src="fg4-resolve.webp" alt="Version 3 Resolve with exception: missing steps listed, open questions with actions, PO marked Not explained" loading="lazy"><figcaption class="cap">v3. Missing steps, open questions with an action next to each, and the PO marked “Not explained”.</figcaption></figure>
+        </div>
+        <p class="trade col"><b>Trade-off.</b> More friction for Emma on every invoice. It is acceptable because a wrong “resolved” sends €24,800 to a possibly fraudulent account.</p>
+      </div>
+
+      <div class="decision">
+        <h3>4. The approver gets a decision summary, and can’t approve her own work.</h3>
+        <p class="col">One round-1 participant wanted the whole story in one place, without opening five tabs. Approval Details now opens with <em>Detected → Verified → Open questions → Recommendation</em>, plus the name of the person who recommends. Separation of duties is explicit: whoever resolves the exception cannot approve the payment.</p>
+        <figure><img src="fg4-approval.webp" alt="Approval details for Sophia Kim with a four-column decision summary and separation of duties" loading="lazy"><figcaption class="cap">Approval Details. The approver reads one summary instead of five tabs.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-testing">
+      <span class="num">05 · Testing and iteration</span>
+      <h2>Two rounds of testing changed most of the screens.</h2>
+      <div class="stats">
+        <div><b>6</b><span>moderated sessions, accounting backgrounds</span></div>
+        <div><b>40</b><span>findings in my heuristic review of v1</span></div>
+        <div><b>3</b><span>prototype versions</span></div>
+        <div><b>5</b><span>tasks per session, from triage to payment</span></div>
+      </div>
+
+      <h3 class="col">Round 1 · v1 · four participants</h3>
+      <div class="prose col"><p>Core task: as an AP specialist, investigate the Nova Logistics exception and decide whether it is safe to send for approval. I logged each issue as observation → problem → severity → design change.</p></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>What we saw</th><th>Who</th><th>Severity</th><th>What changed in v2</th></tr></thead>
+        <tbody>
+          <tr><td>Unsure whether they could resolve before the vendor confirmed; Resolve said “Completed” while Evidence said “pending”</td><td class="n">4 / 4</td><td><span class="sev c">Critical</span></td><td>Resolve locked until required steps are done; “resolve with exception” needs a reason that the approver sees</td></tr>
+          <tr><td>Asked whether “Scheduled” means the money has left</td><td class="n">4 / 4</td><td><span class="sev m">Major</span></td><td>Payment timeline with future steps; new statuses Sent and Failed</td></tr>
+          <tr><td>Couldn’t tell what Approve, Request Changes and Reject would do before clicking</td><td class="n">4 / 4</td><td><span class="sev m">Major</span></td><td>One line of consequence under each decision</td></tr>
+          <tr><td>Read “Verified — safe to proceed” as a guarantee; asked who took responsibility</td><td class="n">3 / 4</td><td><span class="sev m">Major</span></td><td>Outcome descriptions, decision author, open questions listed</td></tr>
+          <tr><td>Couldn’t see who confirmed each signal, or how</td><td class="n">3 / 4</td><td><span class="sev m">Major</span></td><td>Check state per signal with name, time and method</td></tr>
+          <tr><td>Key decisions were lost in a long activity log</td><td class="n">3 / 4</td><td><span class="sev m">Major</span></td><td>“Key decisions” block and filters in Activity</td></tr>
+        </tbody>
+      </table></div>
+      <div class="prose col"><p>I then reviewed every v1 screen against usability heuristics. The 40 findings, merged with the test results, became the v2 backlog. All 40 were addressed in v2.</p></div>
+
+      <h3 class="col">Round 2 · v2 · two participants</h3>
+      <div class="prose col">
+        <p>P5 is an accountant with 1.5 years of experience. P6 is an accounting assistant. Several v1 problems were gone: both understood why Resolve was locked, and P6 read the payment status correctly and rated that task 7 of 7. Others had moved somewhere new.</p>
+      </div>
+      <blockquote class="col"><p>“If there are no notes, I can still tick it. That’s kind of suspicious.”</p><cite>P6, on closing “Document findings” without writing anything · translated</cite></blockquote>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>New problem in v2</th><th>Who</th><th>Severity</th><th>Change in v3</th></tr></thead>
+        <tbody>
+          <tr><td>A required step could be ticked without any note, which unlocked Resolve</td><td class="n">2 / 2</td><td><span class="sev c">Critical</span></td><td>Ticking opens a form; the step closes only with a written finding</td></tr>
+          <tr><td>“Record Reply” was unclear; P6 recorded a vendor reply with no document</td><td class="n">2 / 2</td><td><span class="sev m">Major</span></td><td>Renamed “Add Vendor Reply”; an evidence file is required</td></tr>
+          <tr><td>Couldn’t find how to stop a payment without a hint (SEQ 1 of 7)</td><td class="n">1 / 2</td><td><span class="sev m">Major</span></td><td>“Stop Payment” as a visible action during the investigation</td></tr>
+          <tr><td>Read the invoice due date as the payment date</td><td class="n">1 / 2</td><td><span class="sev m">Major</span></td><td>“Invoice due” label plus a separate payment chip in the header</td></tr>
+          <tr><td>Wanted to see the original documents, not tables</td><td class="n">1 / 2</td><td><span class="sev m">Major</span></td><td>Preview of the original invoice, PO and vendor letter with source and date</td></tr>
+          <tr><td>PO showed green while the €1,300 difference was unexplained</td><td class="n">1 / 2</td><td><span class="sev m">Major</span></td><td>PO marked “Not explained” until the vendor explains it</td></tr>
+        </tbody>
+      </table></div>
+      <div class="pair">
+        <figure><img src="fg4-doc.webp" alt="Original purchase order preview with file name, source system and approval metadata" loading="lazy"><figcaption class="cap">v3. The original PO opens in place, with its source and date. The €1,300 pallet handling is visibly missing.</figcaption></figure>
+        <figure><img src="fg4-investigation.webp" alt="Investigation tab with checklist, waiting-for-vendor status and next step in the header" loading="lazy"><figcaption class="cap">v3. Investigation shows who owns the next step, how long we’ve waited for the vendor and when it was last updated.</figcaption></figure>
+      </div>
+      <div class="note col">
+        <span class="label">Limits of this round</span>
+        <p>Two participants is a small sample. Most round-2 findings were seen by one of the two, and I kept that count visible instead of rounding it up. In P6’s session I prompted too often, so I weighted that session’s task results lower. One task lost its meaning because an earlier task had already resolved the exception; I reordered the script afterwards.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-edges">
+      <span class="num">06 · Edge cases</span>
+      <h2>Every end state has a next step.</h2>
+      <div class="prose col"><p>Version 1 covered the happy path plus Request Changes and Reject, and Reject was a dead end. Testing showed that the unhappy paths are where people get stuck. In v3 every final state leads somewhere, and every way back requires a new resolution and a new approval. Nothing is paid by accident.</p></div>
+      <div class="flow" role="img" aria-label="Flow: exception created, investigate, resolve outcome; not verified leads to payment blocked and back via reopen; verified goes to Sophia, who can approve, request changes or reject; rejection can be reconsidered or reopened">
+        <svg viewBox="0 0 760 430" font-family="Schibsted Grotesk, Arial, sans-serif" font-size="13">
+          <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+          <g fill="none" stroke="var(--muted)" stroke-width="1.25">
+            <path d="M171 130H195" marker-end="url(#ar)"/><path d="M405 130H436" marker-end="url(#ar)"/><path d="M564 130H585" marker-end="url(#ar)"/>
+            <path d="M660 102V64H300V94" marker-end="url(#ar)"/><path d="M500 170V206" marker-end="url(#ar)"/><path d="M564 250H585" marker-end="url(#ar)"/>
+            <path d="M436 250H340V166" marker-end="url(#ar)"/><path d="M500 294V324" marker-end="url(#ar)"/><path d="M400 360H260V166" marker-end="url(#ar)"/>
+          </g>
+          <g>
+            <rect x="21" y="102" width="150" height="56" rx="8" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.25"/>
+            <text x="96" y="126" text-anchor="middle" font-weight="600" fill="var(--ink)">Exception created</text>
+            <text x="96" y="143" text-anchor="middle" font-size="11.5" fill="var(--muted)">automated checks + AI</text>
+            <rect x="195" y="94" width="210" height="72" rx="8" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.25"/>
+            <text x="300" y="118" text-anchor="middle" font-weight="600" fill="var(--ink)">Investigate · Emma</text>
+            <text x="300" y="135" text-anchor="middle" font-size="11.5" fill="var(--muted)">Request Info ⇄ Add Vendor Reply</text>
+            <text x="300" y="151" text-anchor="middle" font-size="11.5" fill="var(--muted)">Escalate ⇄ Daniel</text>
+            <polygon points="436,130 500,90 564,130 500,170" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.25"/>
+            <text x="500" y="134" text-anchor="middle" fill="var(--ink)">Outcome?</text>
+            <rect x="585" y="102" width="150" height="56" rx="8" fill="var(--flag-soft)" stroke="var(--flag)" stroke-width="1.25"/>
+            <text x="660" y="126" text-anchor="middle" font-weight="600" fill="var(--ink)">Payment blocked</text>
+            <text x="660" y="143" text-anchor="middle" font-size="11.5" fill="var(--muted)">no approval, no payment</text>
+            <polygon points="436,250 500,206 564,250 500,294" fill="var(--surface)" stroke="var(--rule)" stroke-width="1.25"/>
+            <text x="500" y="254" text-anchor="middle" fill="var(--ink)">Sophia decides</text>
+            <rect x="585" y="214" width="150" height="72" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+            <text x="660" y="238" text-anchor="middle" font-weight="600" fill="var(--ink)">Payment scheduled</text>
+            <text x="660" y="255" text-anchor="middle" font-size="11.5" fill="var(--ink)">Bank: Sent</text>
+            <text x="660" y="271" text-anchor="middle" font-size="11.5" fill="var(--ink)">or Failed → Retry</text>
+            <rect x="400" y="324" width="200" height="72" rx="8" fill="var(--flag-soft)" stroke="var(--flag)" stroke-width="1.25"/>
+            <text x="500" y="348" text-anchor="middle" font-weight="600" fill="var(--ink)">Payment rejected</text>
+            <text x="500" y="365" text-anchor="middle" font-size="11.5" fill="var(--ink)">Sophia can reconsider</text>
+            <text x="500" y="381" text-anchor="middle" font-size="11.5" fill="var(--ink)">with a reason → Pending</text>
+          </g>
+          <g font-size="11.5" fill="var(--muted)">
+            <text x="480" y="56" text-anchor="middle">Reopen Exception · reason required</text>
+            <text x="600" y="88" text-anchor="middle">not verified</text>
+            <text x="510" y="192">verified · with conditions</text>
+            <text x="568" y="218" text-anchor="end">approve</text>
+            <text x="388" y="242" text-anchor="middle">Request changes</text>
+            <text x="508" y="314">reject</text>
+            <text x="252" y="280" text-anchor="end">Reopen Exception or</text>
+            <text x="252" y="296" text-anchor="end">Request Corrected Invoice</text>
+          </g>
+        </svg>
+      </div>
+      <figure><img src="fg4-after-reject.webp" alt="Recommended actions after rejection: request a corrected invoice, reopen the exception or view the decision" loading="lazy"><figcaption class="cap">After a rejection, Emma sees Sophia’s reason and two ways forward instead of a dead end.</figcaption></figure>
+      <div class="pair">
+        <figure><img src="fg4-queue.webp" alt="Exceptions queue sorted by risk then due date, with owner, time in status and assign actions" loading="lazy"><figcaption class="cap">The queue sorts by risk, then due date, and says so. Owner, time in status and “Assign to me” answer round-1 questions.</figcaption></figure>
+        <figure><img src="fg4-timeline.webp" alt="Payment timeline ending in a failed transfer with the bank's reason and a retry action" loading="lazy"><figcaption class="cap">A failed transfer shows the bank’s reason and a retry. It also appears as a banner in the queue, where the AP specialist works.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-outcome">
+      <span class="num">07 · Outcome</span>
+      <h2>Validated in six sessions, not proven in production.</h2>
+      <div class="prose col">
+        <p>The result is a working prototype of the full flow for two roles: queue, investigation, evidence, resolution, approval, payment, and the branches for changes, rejection, blocking and failed transfers. The final version, with the v3 flows in the refreshed visual design, can be opened and clicked through like a product.</p>
+        <p>Later I refreshed the visual layer in v4 without changing a single flow: a dark sidebar, mono labels for data, a KPI strip on the queue, calmer buttons and pill-shaped status badges that keep the same colour meanings. The v3 screens in this case are shown in the v4 style; v1 screens stay as they were.</p>
+        <p><a href="https://claude.ai/artifact/LWD2SdbBpPFFKDdP7BGfab" target="_blank" rel="noopener">Open the interactive prototype (v4) →</a> · <a href="https://claude.ai/artifact/LWD2SdbBpPFFKDdP7BGfab" target="_blank" rel="noopener">v3</a></p>
+        <p>For handoff I also wrote semantic, accessible HTML and CSS for three key screens: the queue, exception details and approval. Checking every colour token against WCAG AA showed three that failed in the prototype (due dates, the Stop payment button and a secondary grey used for text); the markup uses fixed values. <a href="https://claude.ai/artifact/6o9PGdn4jTuNSZ8zmhQLG3" target="_blank" rel="noopener">See the markup →</a></p>
+        <p>If FinGuard were built, these are the numbers I would track, with a baseline measured before launch:</p>
+      </div>
+      <div class="metrics">
+        <div><b>Time to resolve an exception</b><span>From flag to resolution, split by risk level.</span></div>
+        <div><b>Approval rework rate</b><span>Share of resolved exceptions sent back with Request Changes.</span></div>
+        <div><b>Resolved with exception</b><span>How often specialists skip a required step, and why.</span></div>
+        <div><b>Approver time per decision</b><span>Whether the decision summary really replaces opening the tabs.</span></div>
+        <div><b>Risk dismissed without evidence</b><span>Should trend to zero now that evidence is required.</span></div>
+        <div><b>Payments stopped before execution</b><span>Blocked payments later confirmed as fraud or error.</span></div>
+      </div>
+    </section>
+
+    <section class="chapter" id="c-reflect">
+      <span class="num">08 · What I learned</span>
+      <h2>What I learned, and what I’d change.</h2>
+      <div class="prose col">
+        <h3>What I learned</h3>
+        <ul>
+          <li><strong>The unhappy paths are the product.</strong> v1 handled approval well and broke on rejection, blocking and failed transfers. Testing showed that is where people actually get stuck, so I now map end states before screens.</li>
+          <li><strong>Trust comes from showing who checked what.</strong> Participants trusted a signal more when they could see the person and the method behind it than when the AI sounded confident.</li>
+          <li><strong>Colour carries promises.</strong> Green read as “safe to pay”. In a payment tool every colour has to mean exactly one thing, and writing the markup showed that some colours also failed contrast.</li>
+        </ul>
+        <h3>What I’d do differently</h3>
+        <ul>
+          <li><strong>Recruit AP specialists, not only accountants.</strong> My participants understood invoices but had not worked a payment exception queue. Some confusion came from the domain, not the design.</li>
+          <li><strong>Measure a baseline.</strong> I didn’t record time and SEQ consistently in every session, so I can’t compare versions with numbers. Next time I’d fix the metrics before the first session.</li>
+          <li><strong>Moderate less.</strong> When a participant was stuck, I helped too early. A fixed rule for when to give a hint would make the results cleaner.</li>
+          <li><strong>Test v3.</strong> The latest changes rest on one or two people. A third round would show whether the new friction in Resolve is acceptable.</li>
+        </ul>
+        <p><strong>How I used AI.</strong> I built the coded prototype with Claude and used it to structure notes from my session transcripts. The research sessions, the findings I kept and every design decision are mine.</p>
+        <p><strong>Check accessibility earlier.</strong> The contrast failures surfaced only when I wrote the markup. Next time I’d check tokens against WCAG while choosing them, not at handoff.</p>
+      </div>
+      <div class="next-case">
+        <div><span class="label">Next case</span><h3>Kyiv Educational Hub</h3></div>
+        <a class="btn" href="#koh">Read the case</a>
+      </div>
+    </section>
+
+    </div>
+    </div>
+    <footer class="foot" style="margin-top:56px"><span>Kateryna Lenska · Product designer</span><span>FinGuard is a self-initiated concept. Company and people names are fictional.</span></footer>
+  </main>
+<main id="view-koh" hidden>
+    <a class="back" href="#home"><span aria-hidden="true">←</span>All cases</a>
+
+    <header class="c-hero">
+      <span class="eyebrow">Kyiv Educational Hub · Mavericks Agency · 2025</span>
+      <h1>From course list to verified certificate</h1>
+      <p class="lede">Kyiv Educational Hub is a free public learning platform. Its interface was designed in 2019 for a different audience and a much smaller set of features. I redesigned the structure around the learner’s path, from finding a course to a certificate an employer can check, and added a career roadmap that keeps people moving.</p>
+      <div class="facts-grid">
+        <div class="key"><span class="label">Research</span><b>Audit + comparative user interviews</b></div>
+        <div><span class="label">Role</span><b>Sole product designer</b></div>
+        <div><span class="label">Team</span><b>Mavericks Agency</b></div>
+        <div><span class="label">Duration</span><b>3 months</b></div>
+        <div><span class="label">Platform</span><b>Web · desktop, tablet, mobile</b></div>
+        <div><span class="label">Status</span><b>Designed, in development</b></div>
+      </div>
+      <div class="stage stage-lg stage-koh vt-koh" aria-label="Kyiv Educational Hub screens">
+        <img class="scr scr-main" src="koh-cov-main.webp" alt="Kyiv Educational Hub home page">
+        <img class="scr scr-side" src="koh-cov-side.webp" alt="Video lesson with the course map in a side panel" loading="lazy">
+      </div>
+    </header>
+
+    <div class="note col">
+      <span class="label">About this case</span>
+      <p>This is client work done at Mavericks Agency. I designed the platform alone over three months; it is now being built, so there are no post-launch numbers yet. Screens are exported from the final Figma file.</p>
+    </div>
+
+    <div class="case-body">
+      <aside class="side" aria-label="Case study navigation">
+        <a class="pillback" href="#home"><span aria-hidden="true">←</span>Back to cases</a>
+        <span class="side-label">Quick navigation</span>
+        <ol class="qnav"><li><button data-go="k-context"><span class="n">01</span><span class="t">Context</span></button></li><li><button data-go="k-audit"><span class="n">02</span><span class="t">What was broken</span></button></li><li><button data-go="k-decisions"><span class="n">03</span><span class="t">Key decisions</span></button></li><li><button data-go="k-roadmap"><span class="n">04</span><span class="t">Motivation</span></button></li><li><button data-go="k-proof"><span class="n">05</span><span class="t">Proof of skills</span></button></li><li><button data-go="k-states"><span class="n">06</span><span class="t">States</span></button></li><li><button data-go="k-system"><span class="n">07</span><span class="t">System &amp; handoff</span></button></li><li><button data-go="k-reflect"><span class="n">08</span><span class="t">What I learned</span></button></li></ol>
+      </aside>
+      <div class="case-main">
+
+    <section class="chapter" id="k-context">
+      <span class="num">01 · Context</span>
+      <h2>The platform had outgrown its interface.</h2>
+      <div class="prose col">
+        <p>The 2019 design was a marketing site with a few paid courses attached. Since then the hub became a free public platform with public-sector partners, and the product grew: free courses, SCORM modules, events, offline groups, company courses, interactive video series, tests, certificates and a career programme.</p>
+        <p>None of that had a place in the old structure. My brief was to adapt the design and the information architecture to the platform’s current audience, and to leave room for features that will keep coming.</p>
+        <p><strong>The goal I set for the redesign:</strong> a learner should always know what to do next, and leave the platform with something they can show an employer.</p>
+        <p><strong>Constraints.</strong> Three months as the only designer. Dozens of existing courses in very different formats, from video to SCORM, all had to fit one structure. Time for one round of user interviews, so I spent it on the decision with the most impact, the course page. The platform is still being built, so there are no live numbers yet.</p>
+      </div>
+      <figure class="wide"><img src="koh-home.webp" alt="New home page with hero, partners, popular courses and the learning path" loading="lazy"><figcaption class="cap">The new home page leads with what people come for: courses, the learning path and the certificate at the end of it.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="k-audit">
+      <span class="num">02 · What was broken</span>
+      <h2>The old design hid the things learners needed most.</h2>
+      <div class="prose col">
+        <p>I started with an audit of the 2019 design and the live site, looking at it through the tasks a learner actually has: choose a course, study it, prove the result.</p>
+        <ul>
+          <li><strong>One course per screen.</strong> Course cards were full-width banners with only a title and a button. To compare two courses you had to open both.</li>
+          <li><strong>Certificates were hard to find.</strong> The footer had a link called “How to find a certificate (instructions)”. If a feature needs a manual, the interface has failed.</li>
+          <li><strong>Navigation named campaigns, not tasks.</strong> Labels like “Your opportunities” and “Free?” instead of Courses, Events, My courses.</li>
+          <li><strong>Promises without product.</strong> The landing page advertised an “interactive résumé” that didn’t exist in the platform.</li>
+          <li><strong>Jargon and low contrast.</strong> “SCORM format” in course titles with no explanation; yellow capitals on teal.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="chapter" id="k-decisions">
+      <span class="num">03 · Key decisions</span>
+      <h2>Each change answers a problem from the audit.</h2>
+      <div class="prose col"><p>For every decision below: what was wrong, what I changed, why it should work, and what I would measure once the platform is live. The reasoning rests on established usability principles and one round of comparative user interviews; the post-launch numbers don’t exist yet.</p></div>
+
+      <div class="decision">
+        <h3>A catalog people can compare at a glance</h3>
+        <p><b>Problem.</b> One banner per screen, no attributes. Choosing meant opening courses one by one and remembering them.</p>
+        <p><b>Change.</b> A grid of cards with category, type, number of lessons, price, and NEW and SCORM labels, plus category filter, sorting and search.</p>
+        <p><b>Why.</b> People compare better when the facts sit side by side (recognition instead of recall). As the catalog grew to dozens of courses, filters became necessary: the more options on screen, the longer a choice takes, so narrowing them first keeps the decision quick.</p>
+        <p class="trade"><b>Measure.</b> Time from opening the catalog to enrolling; share of searches and filters that end in an enrolment.</p>
+      </div>
+      <div class="pair">
+        <figure><span class="tag before">2019</span><img src="koh-old-catalog.webp" alt="2019 design: courses as large teal banners" loading="lazy"><figcaption class="cap">2019: three courses per screen and nothing to compare them by.</figcaption></figure>
+        <figure><span class="tag after">2025</span><img src="koh-catalog.webp" alt="2025 catalog grid with filters and labels" loading="lazy"><figcaption class="cap">2025: a dozen courses per screen, each with the facts needed to choose.</figcaption></figure>
+      </div>
+
+      <div class="decision">
+        <h3>Navigation named after tasks</h3>
+        <p><b>Problem.</b> Menu items described campaigns (“Your opportunities”, “Free?”), so people had to guess where things were.</p>
+        <p><b>Change.</b> Courses, Events, News in the header; My courses, certificates, groups and homework in the profile menu; “How to find a certificate” moved from the footer into the main menu.</p>
+        <p><b>Why.</b> People spend most of their time on other learning platforms and expect the same words there. Familiar labels remove a step of interpretation, and splitting public sections from personal ones matches the two modes people are in: browsing and studying.</p>
+        <p class="trade"><b>Measure.</b> Support questions about where to find certificates and courses; clicks on the old instruction page.</p>
+      </div>
+
+      <div class="decision">
+        <h3>A course page with a persistent side panel</h3>
+        <p><b>Problem.</b> Learners jump between lessons, files and homework all the time. In a long page, each jump meant scrolling back up and losing their place.</p>
+        <p><b>Change.</b> I wireframed two versions: A, a timeline of modules with homework and files as separate blocks; B, modules that expand into lessons and a side panel that stays with the learner. I showed both to users of the platform in interviews and asked them to find their way through a course.</p>
+        <p><b>Why.</b> In the interviews, people oriented themselves faster in B, and it held more structured information without feeling crowded. The panel answers “where am I and what’s next” on every screen, which is what keeps people moving through a long course.</p>
+        <p class="trade"><b>Trade-off.</b> The panel takes width from the lesson content. I accepted that, because it saves a trip back to the course page each time.</p>
+      </div>
+      <div class="pair">
+        <figure><span class="tag">Variant A</span><img src="koh-wf-a.webp" alt="Wireframe variant A" loading="lazy"><figcaption class="cap">A: the programme as a timeline; homework and files in separate blocks.</figcaption></figure>
+        <figure><span class="tag">Variant B · chosen</span><img src="koh-wf-b.webp" alt="Wireframe variant B" loading="lazy"><figcaption class="cap">B: modules expand into lessons; each lesson has a side panel.</figcaption></figure>
+      </div>
+
+      <div class="decision">
+        <h3>One layout for every kind of lesson</h3>
+        <p><b>Problem.</b> Lessons come as video, SCORM modules, text, tests and homework. Different layouts for each would make every new lesson type a new thing to learn.</p>
+        <p><b>Change.</b> Content on the left, the course map on the right, progress marked in the map, for every lesson type.</p>
+        <p><b>Why.</b> Consistency lets people learn the page once and then focus on the content. It also lets the team add new lesson types without redesigning the page.</p>
+        <p class="trade"><b>Measure.</b> Lesson completion and drop-off by lesson type.</p>
+      </div>
+      <figure class="wide"><img src="koh-lesson.webp" alt="Lesson pages for video, slides, text and homework" loading="lazy"><figcaption class="cap">Video, slides, text and homework, all in the same frame.</figcaption></figure>
+
+      <div class="decision">
+        <h3>Tests that match the skill</h3>
+        <p><b>Problem.</b> A language level or a work process can’t be checked fairly with multiple choice alone.</p>
+        <p><b>Change.</b> Single and multiple choice, open answers, picking images, ordering steps, a career-guidance test and a language test that places the learner on the A1–C2 scale. Each test ends with a clear passed or failed screen and a next step.</p>
+        <p><b>Why.</b> The format should test the skill, not the learner’s patience with the format. Immediate feedback after a test keeps people going; a failure screen with a retry is better than a silent score.</p>
+        <p class="trade"><b>Measure.</b> Test completion and retry rates.</p>
+      </div>
+      <figure class="wide"><img src="koh-lang-test.webp" alt="Language test questions: correct or remove words, fill the gaps" loading="lazy"><figcaption class="cap">Language test: find and fix the mistake, then fill the gaps by dragging words into place.</figcaption></figure>
+      <figure class="wide"><img src="koh-homework.webp" alt="Homework upload modal: empty, uploading, link" loading="lazy"><figcaption class="cap">Homework upload: file, photo or link, with upload progress and a finished state.</figcaption></figure>
+      <div class="prose col">
+        <p>Two formats got their own patterns. <strong>Interactive series</strong> are videos that pause for a decision; each choice leads to a different ending, so the learner practises a situation rather than watching it. <strong>Company courses</strong> let an organisation assign courses to its people, with a switcher when a learner belongs to more than one.</p>
+      </div>
+      <div class="pair">
+        <figure><img src="koh-serial.webp" alt="Interactive series" loading="lazy"><figcaption class="cap">Interactive series: each choice has its own outcome.</figcaption></figure>
+        <figure><img src="koh-company.webp" alt="Company courses" loading="lazy"><figcaption class="cap">Company courses with progress on each card.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="k-roadmap">
+      <span class="num">04 · Motivation</span>
+      <h2>A career roadmap turns a long programme into the next small step.</h2>
+      <div class="prose col">
+        <p>The “Stepping into Job” programme asks a learner to complete ten steps: a career-guidance test, an interactive résumé, a video introduction, four career mini-courses, three external courses, a language test, a career challenge, a mock interview, a goals map and a mentor. A practical-experience step is optional. Listed as a page of tasks, that is overwhelming.</p>
+        <p>I designed it as a roadmap that lives on the home page and in the profile.</p>
+      </div>
+      <figure class="wide"><img src="koh-roadmap.webp" alt="Career roadmap block: path of steps, current step highlighted, what to do panel, certificate preview" loading="lazy"><figcaption class="cap">The roadmap on the home page: the current step is highlighted, the panel says what to do and how long it takes, and the certificate waits at the end.</figcaption></figure>
+
+      <div class="decision">
+        <h3>One next step, always visible</h3>
+        <p><b>Why.</b> A long list makes people postpone. The roadmap shows the whole path but highlights only one step, with a single button (“Next step”) and a time estimate (“15 min”). A small, concrete task with a known cost is easier to start.</p>
+      </div>
+      <div class="decision">
+        <h3>Progress you can see, and a reward at the end</h3>
+        <p><b>Why.</b> People work harder as they see themselves getting closer to a goal. Completed steps turn green on the path, and the blurred certificate is visible from the first day, so the end is concrete. Achievements in the profile, including locked ones, show what else can be earned.</p>
+      </div>
+      <div class="decision">
+        <h3>A mentor confirms each step</h3>
+        <p><b>Why.</b> A step is complete only after a mentor reviews it. The panel spells this out: what to do, where to upload the link, and that a mentor will check it. Then it says “Task confirmed — move on to the next step”. Knowing that someone will look at the work raises its quality, and the confirmation is a moment of recognition.</p>
+        <p class="trade"><b>Trade-off.</b> Mentor review slows the path down. I kept it, because the certificate is only worth something if the steps behind it were checked.</p>
+      </div>
+      <div class="pair">
+        <figure><img src="koh-roadmap-profile.webp" alt="Roadmap tab in the learner profile with task confirmed and next steps" loading="lazy"><figcaption class="cap">In the profile: a confirmed task, then the next one with instructions and a link field.</figcaption></figure>
+        <figure><img src="koh-roadmap-mobile.webp" alt="Mobile roadmap as a vertical path" loading="lazy"><figcaption class="cap">On mobile the path runs vertically, and the “What to do” panel folds into the card.</figcaption></figure>
+      </div>
+      <div class="prose col"><p><strong>What I would measure:</strong> share of learners who start step 2 after step 1, median time between steps, and how many reach the certificate.</p></div>
+    </section>
+
+    <section class="chapter" id="k-proof">
+      <span class="num">05 · Proof of skills</span>
+      <h2>The certificate became something an employer can check.</h2>
+      <div class="prose col">
+        <p><b>Problem.</b> Learners come here to get a job. A certificate locked inside the platform, or a PDF anyone could edit, doesn’t help with that, and the “interactive résumé” existed only on the landing page.</p>
+        <p><b>Change.</b> The profile collects work experience, education, languages with the tested level, achievements and certificates, and can be exported as a PDF résumé. Anyone can verify a certificate by its number, and each course has a public list of graduates.</p>
+        <p><b>Why.</b> The value of a certificate depends on whether a third party trusts it. A verifiable record makes the learner’s effort usable outside the platform, which is the reason they came.</p>
+        <p class="trade"><b>Measure.</b> Résumé exports and certificate verifications per month.</p>
+      </div>
+      <figure class="wide"><img src="koh-profile.webp" alt="Profile tabs: general info, certificates, achievements" loading="lazy"><figcaption class="cap">The profile as a résumé: experience, education, language level, then certificates and achievements, including locked ones.</figcaption></figure>
+      <figure class="wide"><img src="koh-graduates.webp" alt="Graduates registry" loading="lazy"><figcaption class="cap">Public graduates registry with search, and the empty result.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="k-states">
+      <span class="num">06 · States</span>
+      <h2>Every list has a plan for when it is empty.</h2>
+      <div class="prose col">
+        <p><b>Why.</b> A new learner sees empty pages first: no courses, no homework, no certificates. That first visit decides whether they come back, so an empty page must never be a dead end. Each empty state says what will appear there and links to the action that fills it.</p>
+        <p>Events show registration status (confirmed, waiting, declined, finished), and consultation booking says when a day has no free slots instead of failing silently.</p>
+      </div>
+      <div class="pair">
+        <figure><img src="koh-profile-empty.webp" alt="Empty certificates tab and empty homework list" loading="lazy"><figcaption class="cap">Empty certificates and homework: each says what will appear and how to get it. The certificates tab also offers verification by number.</figcaption></figure>
+        <figure><img src="koh-events.webp" alt="My events with statuses" loading="lazy"><figcaption class="cap">My events: upcoming and past, with a status on every card.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="k-system">
+      <span class="num">07 · System &amp; handoff</span>
+      <h2>One system, three screen sizes, ready for development.</h2>
+      <div class="prose col">
+        <p>I built the file as a system: text, colour and effect styles, a layout grid, and components such as course, event and teacher cards, certificate and award items. Pages have laptop, tablet and mobile versions, and each section is marked “Ready for dev” only when its states are complete.</p>
+      </div>
+      <div class="pair">
+        <figure><img src="koh-tablet.webp" alt="Home page on tablet and mobile" loading="lazy"><figcaption class="cap">The home page on tablet and mobile.</figcaption></figure>
+        <figure><img src="koh-auth.webp" alt="Log in and sign up screens" loading="lazy"><figcaption class="cap">Log in and sign up, with Google login.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="k-reflect">
+      <span class="num">08 · What I learned</span>
+      <h2>What I learned, and what I’d change.</h2>
+      <div class="prose col">
+        <h3>What I learned</h3>
+        <ul>
+          <li><strong>Two variants settle a debate faster than opinions.</strong> Showing users two course-page wireframes ended a discussion that could have taken weeks.</li>
+          <li><strong>Motivation is a design problem.</strong> A long programme becomes doable when the interface shows one next step, how long it takes, and the reward at the end.</li>
+          <li><strong>A redesign starts with structure, not visuals.</strong> Most problems in the old site were about where things lived and what they were called, not how they looked.</li>
+        </ul>
+        <h3>What I’d do differently</h3>
+        <ul>
+          <li><strong>Test more than one decision.</strong> Comparing two variants in interviews settled the course page quickly. I’d run the same kind of test on the catalog filters and the roadmap.</li>
+          <li><strong>Agree on metrics before launch.</strong> Every decision above has a metric. I’d record a baseline on the old site first, so the redesign can be judged by numbers.</li>
+          <li><strong>Plan empty states earlier.</strong> I designed them after the main screens. Starting from them would have shaped the onboarding sooner.</li>
+        </ul>
+      </div>
+      <div class="next-case">
+        <div><span class="label">Next case</span><h3>OLX for Business</h3></div>
+        <a class="btn" href="#olx">Read the case</a>
+      </div>
+    </section>
+
+      </div>
+    </div>
+    <footer class="foot" style="margin-top:56px"><span>Kateryna Lenska · Product designer</span><span>Client work at Mavericks Agency.</span></footer>
+  </main>
+
+<main id="view-olx" hidden>
+    <a class="back" href="#home"><span aria-hidden="true">←</span>All cases</a>
+
+    <header class="c-hero">
+      <span class="eyebrow">OLX for Business · Mavericks Agency</span>
+      <h1>From scattered pages to answers</h1>
+      <p class="lede">business.olx.ua is where companies learn about and buy OLX’s business tools: placement packages, advertising, company profiles, delivery, analytics. I redesigned the portal, designed a new smart search with an AI assistant, and rebuilt the category analytics so sellers can price and plan.</p>
+      <div class="facts-grid">
+        <div class="key"><span class="label">Scope</span><b>Portal redesign, Smart Search, Analytics</b></div>
+        <div><span class="label">Role</span><b>Sole designer</b></div>
+        <div><span class="label">Team</span><b>Mavericks Agency, client PM</b></div>
+        <div><span class="label">Client</span><b>OLX for Business</b></div>
+        <div><span class="label">Platform</span><b>Web · desktop, tablet, mobile</b></div>
+        <div><span class="label">My part</span><b>Flows, states, UI, responsive</b></div>
+      </div>
+      <div class="stage stage-lg stage-olx vt-olx" aria-label="OLX for Business screens">
+        <img class="scr scr-main" src="olx-cov-side.webp" alt="OLX Jobs page for recruiters">
+        <img class="scr scr-side" src="olx-cov-side2.webp" alt="Smart search results with type labels and popular queries" loading="lazy">
+      </div>
+    </header>
+
+    <div class="note col">
+      <span class="label">About this case</span>
+      <p>Client work done at Mavericks Agency. I was the only designer on the project. The brief for Smart Search came from the client’s product manager; the flows, states and interface are mine. I don’t have post-launch data, so this case is about the problems and the reasoning behind each decision.</p>
+    </div>
+
+    <div class="case-body">
+      <aside class="side" aria-label="Case study navigation">
+        <a class="pillback" href="#home"><span aria-hidden="true">←</span>Back to cases</a>
+        <span class="side-label">Quick navigation</span>
+        <ol class="qnav"><li><button data-go="o-context"><span class="n">01</span><span class="t">Context</span></button></li><li><button data-go="o-redesign"><span class="n">02</span><span class="t">Before → after</span></button></li><li><button data-go="o-search"><span class="n">03</span><span class="t">Smart Search</span></button></li><li><button data-go="o-analytics"><span class="n">04</span><span class="t">Analytics</span></button></li><li><button data-go="o-packages"><span class="n">05</span><span class="t">Packages &amp; cart</span></button></li><li><button data-go="o-rules"><span class="n">06</span><span class="t">Complex rules</span></button></li><li><button data-go="o-system"><span class="n">07</span><span class="t">Responsive</span></button></li><li><button data-go="o-reflect"><span class="n">08</span><span class="t">What I learned</span></button></li></ol>
+      </aside>
+      <div class="case-main">
+
+    <section class="chapter" id="o-context">
+      <span class="num">01 · Context</span>
+      <h2>A business portal that grew page by page.</h2>
+      <div class="prose col">
+        <p>The portal serves small shops, recruiters, real-estate agencies, car dealers and service providers. Each of them comes with a narrow question: which package fits my category, how do I promote a listing, what changes with the new payment rules, is my price competitive.</p>
+        <p>The answers existed, but they were spread across dozens of landing pages, a blog, a business school and guides, each built as a separate campaign. Finding one meant knowing where it lived.</p>
+        <p><strong>The goal I worked towards:</strong> a business owner should get from a question to an answer, or to the right tool, without knowing how the site is organised.</p>
+        <p><strong>Constraints.</strong> I was the only designer, working inside OLX’s existing brand. Smart Search started from a product manager’s brief, so the scope was set before I joined. There was no budget for research with sellers, so my decisions rest on the old pages, the brief and established usability principles. Every page needed desktop, laptop, tablet and mobile versions, and the legal pages had to stay accurate to the law while becoming readable.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="o-redesign">
+      <span class="num">02 · Before → after</span>
+      <h2>One structure for every page.</h2>
+      <div class="prose col">
+        <p>The old category pages were built like posters: a large photo, a slogan in capitals, then sections in a different order on every page. Content was copied between them; the Jobs page still said “the largest base of real-estate listings in Ukraine”. I introduced one structure that every category page follows: who you can reach and the key numbers, the tools for this category, proof, then help from a manager. A recognisable shape means people learn the site once.</p>
+        <p>The visual language is new too: covers with a recurring angled shape, cards with one action each, and a calm teal palette that leaves colour for buttons and data.</p>
+      </div>
+      <div class="pair">
+        <figure><span class="tag before">Old portal</span><img src="olx-old-home.webp" alt="Old OLX Jobs page: photo hero with a slogan, then benefits copied from real estate" loading="lazy"><figcaption class="cap">OLX Jobs before: a slogan, then benefits and numbers about real estate.</figcaption></figure>
+        <figure><span class="tag after">Redesign</span><img src="olx-new-home.webp" alt="New OLX Jobs page: hero with candidate numbers, a free-listing offer and tools for recruiters" loading="lazy"><figcaption class="cap">OLX Jobs after: how many candidates you reach, then the tools for recruiters.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="o-search">
+      <span class="num">03 · Smart Search</span>
+      <h2>Search that never ends in a dead end.</h2>
+      <div class="prose col">
+        <p>The PM’s brief: let business clients search all the portal’s content, and add an AI assistant for questions that a list of pages can’t answer. I designed how the two work together, every state of both, and how the feature is introduced.</p>
+      </div>
+
+      <div class="decision">
+        <h3>Results that say where they lead</h3>
+        <p><b>Problem.</b> The portal mixes service pages, articles and videos with similar titles. A list of titles alone makes people open results one by one.</p>
+        <p><b>Change.</b> Suggestions appear as you type. Each result shows the path to it on the site, its address and a type label: Page, Video or Article. Popular queries sit underneath as starting points.</p>
+        <p><b>Why.</b> The path and the type answer “is this what I need?” before the click. People choose by format: someone who wants a quick fact skips a video.</p>
+        <p class="trade"><b>Measure.</b> Share of searches that end in a click; how often people come back to the results and pick another one.</p>
+      </div>
+      <figure class="wide"><img src="olx-ss-search.webp" alt="Search dropdown with suggestions, breadcrumbs and an ask-the-assistant row; skeleton while loading" loading="lazy"><figcaption class="cap">Suggestions while typing, and a skeleton in the same layout while results load.</figcaption></figure>
+      <figure class="wide"><img src="olx-ss-results.webp" alt="Full results page with type labels, popular queries and an ask-the-assistant banner" loading="lazy"><figcaption class="cap">The full results page: type labels on the right of each result, popular queries beside the list.</figcaption></figure>
+
+      <div class="decision">
+        <h3>No results is a starting point, not an error</h3>
+        <p><b>Problem.</b> Business owners use their own words, not the portal’s. An empty page with “Nothing found” sends them away.</p>
+        <p><b>Change.</b> The empty state offers a corrected query (“Did you mean…”), similar materials, and a hand-off to the assistant: “Didn’t find what you were looking for? Ask the assistant.” The same hand-off sits in the dropdown and at the end of every results page.</p>
+        <p><b>Why.</b> When keywords fail, a question in plain words often works. Offering the assistant exactly at that moment turns a failed search into a second attempt.</p>
+      </div>
+      <figure class="wide"><img src="olx-ss-noresults.webp" alt="No results page with a suggested query, similar materials and the assistant banner" loading="lazy"><figcaption class="cap">No exact match: a corrected query, three similar materials and a way to ask the assistant.</figcaption></figure>
+      <figure class="wide"><img src="olx-ss-handoff.webp" alt="No results in the dropdown with a hand-off button, and the assistant start screen" loading="lazy"><figcaption class="cap">The hand-off: from an empty dropdown to the assistant, with “Back to search” always available.</figcaption></figure>
+
+      <div class="decision">
+        <h3>An assistant that shows its sources and admits when it doesn’t know</h3>
+        <p><b>Problem.</b> An AI answer about packages or payment rules is only useful if a business owner can trust it. A confident wrong answer costs them money.</p>
+        <p><b>Change.</b> Every answer ends with “Materials the answer was based on”, linking to the portal pages. When the assistant can’t find an answer, it says so and suggests rephrasing, instead of guessing. While it works, it says “Already working on it…”.</p>
+        <p><b>Why.</b> Sources let people check the answer and continue to the real page. An honest “I couldn’t find it” keeps trust for the times the assistant does answer.</p>
+        <p class="trade"><b>Trade-off.</b> The sources take space below every answer. I kept them, because the portal’s own pages are where people buy, and the assistant should lead there.</p>
+      </div>
+      <figure class="wide"><img src="olx-ss-ai.webp" alt="Assistant states: loading, answer with source links, no answer found" loading="lazy"><figcaption class="cap">Three assistant states: working on it, an answer with its sources, and no answer found.</figcaption></figure>
+
+      <div class="pair">
+        <figure><img src="olx-ss-popup.webp" alt="Popup: Searching just got easier, with Search and Ask the AI assistant buttons" loading="lazy"><figcaption class="cap">Introducing the feature: one popup, both entry points, no tour.</figcaption></figure>
+        <figure><img src="olx-svc-popup.webp" alt="Information popup explaining Top listings and 7 boosts in 7 days" loading="lazy"><figcaption class="cap">The same explain-in-place pattern elsewhere: how each ad service works and when to use it.</figcaption></figure>
+      </div>
+      <figure class="wide"><img src="olx-ss-mobile.webp" alt="Five mobile screens: search entry, suggestions, results, assistant answer, no results" loading="lazy"><figcaption class="cap">On mobile, search opens full screen; the assistant and the hand-off work the same way.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="o-analytics">
+      <span class="num">04 · Analytics</span>
+      <h2>Analytics that help a seller decide on a price.</h2>
+      <div class="prose col">
+        <p>A seller looks at category analytics before listing or repricing: is there demand for this, what do others charge, where do buyers search. The old page opened with category totals and a volume chart; prices were a tab further in. In the redesign the page opens with the question a seller actually has: what does this exact item sell for.</p>
+      </div>
+      <div class="pair">
+        <figure><span class="tag before">Old portal</span><img src="olx-old-ana.webp" alt="Old Auto parts analytics page opening on category totals and a volume chart" loading="lazy"><figcaption class="cap">The same category before: it opens on totals; prices are in a separate tab.</figcaption></figure>
+        <figure><span class="tag after">Redesign</span><img src="olx-ana-price.webp" alt="New price analytics: search by model, filters and a price chart with median and range" loading="lazy"><figcaption class="cap">The same category after: it opens on prices, with search for an exact item.</figcaption></figure>
+      </div>
+
+      <div class="decision">
+        <h3>A price range, not just an average</h3>
+        <p><b>Problem.</b> Classified prices are noisy: a few very cheap or very expensive listings pull the average away from what most items sell for.</p>
+        <p><b>Change.</b> The price chart shows the median and a shaded range that covers 90% of listings. Filters narrow it to one model, subcategory and region.</p>
+        <p><b>Why.</b> A seller doesn’t need the average; they need to see whether their price sits inside the normal range or outside it. The range answers that at a glance.</p>
+        <p class="trade"><b>Trade-off.</b> A range is harder to read than a single line. I added a legend under the chart and kept one colour for the whole series.</p>
+      </div>
+      <div class="decision">
+        <h3>Demand split by when and where</h3>
+        <p><b>Change.</b> A second tab shows demand: activity by day of the week and hour, views per subcategory, and a map of the regions where buyers search for the item.</p>
+        <p><b>Why.</b> These answer practical questions: when to post, which subcategory to list in, and whether delivery to other regions is worth offering.</p>
+      </div>
+      <figure class="wide"><img src="olx-ana-overview.webp" alt="Overview charts: seller types, popular subcategories, listings and views by month" loading="lazy"><figcaption class="cap">Overview: who sells, what is listed most, and how listings and views change over time.</figcaption></figure>
+      <div class="pair">
+        <figure><img src="olx-ana-map.webp" alt="Map of regions where buyers search for the item, with a ranked list" loading="lazy"><figcaption class="cap">Where buyers search: a map and a ranked list of regions.</figcaption></figure>
+        <figure><img src="olx-ana-loading.webp" alt="Price chart loading state with axes visible and a spinner" loading="lazy"><figcaption class="cap">Loading keeps the axes and filters in place, so the screen doesn’t jump when data arrives.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="o-packages">
+      <span class="num">05 · Packages &amp; cart</span>
+      <h2>Packages you can compare in one look.</h2>
+      <div class="decision">
+        <h3>A comparison table instead of three long lists</h3>
+        <p><b>Problem.</b> Packages were three cards with long feature lists, where missing features were shown as greyed-out lines. To compare, people read three columns line by line.</p>
+        <p><b>Change.</b> One table: rows for each feature, columns for Basic, Standard and Ultra, ticks and dashes, a switch for the business category, and a buy button under each column. In additional placements, the recommended option is marked “Optimal package”.</p>
+        <p><b>Why.</b> A table puts the differences on the same line, so the choice is about the rows that matter to you. Marking one option as recommended helps people who don’t want to compare at all.</p>
+        <p class="trade"><b>Measure.</b> Clicks on “Buy package” per visit; the split between packages.</p>
+      </div>
+      <div class="pair">
+        <figure><span class="tag before">Old portal</span><img src="olx-old-pack.webp" alt="Old packages: three cards with long feature lists" loading="lazy"><figcaption class="cap">Three long lists to read side by side.</figcaption></figure>
+        <figure><span class="tag after">Redesign</span><img src="olx-new-pack.webp" alt="New packages comparison table with category switch" loading="lazy"><figcaption class="cap">One table, filtered by business category.</figcaption></figure>
+      </div>
+      <div class="pair">
+        <figure><img src="olx-addons.webp" alt="Additional placements with the Standard option marked Optimal package" loading="lazy"><figcaption class="cap">Additional placements: choose a period, compare three options, the recommended one is marked.</figcaption></figure>
+        <figure><img src="olx-cart.webp" alt="Cart feature page explaining a multi-item order in six steps" loading="lazy"><figcaption class="cap">A new feature, the cart, explained as six steps with interface snippets.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="o-rules">
+      <span class="num">06 · Complex rules</span>
+      <h2>New rules, explained for your situation.</h2>
+      <div class="prose col">
+        <p>New laws changed how sellers on marketplaces are verified and taxed. The rules differ for a private seller, a registered business and a buyer, and the original text is long and legal.</p>
+      </div>
+      <div class="decision">
+        <h3>Start with “who are you?”</h3>
+        <p><b>Change.</b> The page asks people to pick their situation: I sell my own things, I’m a sole trader or company, I buy. Only the rules for that situation are shown, with a short list of what to do.</p>
+        <p><b>Why.</b> Most readers need a third of the page. Choosing first removes everything that doesn’t apply to them.</p>
+      </div>
+      <div class="decision">
+        <h3>Show the threshold, don’t describe it</h3>
+        <p><b>Change.</b> The tax rule is a bar: 0% up to €2,000 of sales a year, 10% above it. Key dates are a timeline, and the next steps are three numbered cards.</p>
+        <p><b>Why.</b> A number on a scale is easier to place yourself on than a sentence with conditions.</p>
+      </div>
+      <figure class="wide"><img src="olx-pay-situation.webp" alt="Situation picker with tabs for private seller, business and buyer" loading="lazy"><figcaption class="cap">Pick your situation, see only your rules, and what happens if you skip verification.</figcaption></figure>
+      <figure class="wide"><img src="olx-pay-tax.webp" alt="Tax threshold shown as a bar from 0% to 10% at 2,000 euros" loading="lazy"><figcaption class="cap">The tax threshold as a scale.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="o-system">
+      <span class="num">07 · Responsive</span>
+      <h2>Every page at every screen size.</h2>
+      <div class="prose col">
+        <p>Every page, Smart Search and analytics included, has desktop, laptop, tablet and mobile versions. The hardest part was tables: on mobile the package table becomes a switch between Basic, Standard and Ultra, showing one column at a time with the same rows, instead of a table you have to scroll sideways.</p>
+      </div>
+      <figure class="wide"><img src="olx-mobile.webp" alt="Mobile pages: services, packages with a package switch, payment rules" loading="lazy"><figcaption class="cap">Mobile: services, packages with the package switch, and the payment rules page.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="o-reflect">
+      <span class="num">08 · What I learned</span>
+      <h2>What I learned, and what I’d change.</h2>
+      <div class="prose col">
+        <h3>What I learned</h3>
+        <ul>
+          <li><strong>A failed search is a design moment.</strong> The point where keywords stop working is exactly where to offer a different way to ask, here the assistant.</li>
+          <li><strong>AI answers need receipts.</strong> Showing the sources behind an answer, and admitting when there isn’t one, matters more for trust than the answer’s tone.</li>
+          <li><strong>Consistency scales better than polish.</strong> One page structure across dozens of pages did more for findability than any single beautiful page.</li>
+        </ul>
+        <h3>What I’d do differently</h3>
+        <ul>
+          <li><strong>Test the assistant’s wording with sellers.</strong> The states are designed, but phrases like “Ask the assistant” and the no-answer message deserve a quick test with real business owners.</li>
+          <li><strong>Agree on search metrics before launch.</strong> Zero-result rate, searches that end in a click, and how often people switch to the assistant would show whether the hand-off works.</li>
+          <li><strong>Start from the analytics questions.</strong> I would interview a few sellers about the decisions they make before listing, and design the charts from those questions.</li>
+        </ul>
+      </div>
+      <div class="next-case">
+        <div><span class="label">Next case</span><h3>ZELENA UX audit</h3></div>
+        <a class="btn" href="#audit">Read the case</a>
+      </div>
+    </section>
+
+      </div>
+    </div>
+    <footer class="foot" style="margin-top:56px"><span>Kateryna Lenska · Product designer</span><span>Client work at Mavericks Agency.</span></footer>
+  </main>
+
+<main id="view-audit" hidden>
+    <a class="back" href="#home"><span aria-hidden="true">←</span>All cases</a>
+
+    <header class="c-hero">
+      <span class="eyebrow">ZELENA · Mavericks Agency</span>
+      <h1>A UX audit that speaks in money</h1>
+      <p class="lede">ZELENA is a Kyiv gift gallery and flower shop that has sold online since 1997. I audited the whole purchase path of zelena.ua and turned the findings into 35 prioritised hypotheses and an executive summary that shows the business benefit in numbers: how much extra revenue fixing the problems is likely to bring.</p>
+      <div class="facts-grid">
+        <div class="key"><span class="label">Result</span><b>35 hypotheses, +17–33% revenue forecast</b></div>
+        <div><span class="label">Role</span><b>UX auditor, sole author</b></div>
+        <div><span class="label">Client</span><b>ZELENA, gifts &amp; bouquets</b></div>
+        <div><span class="label">Time</span><b>About 40 hours · Nov 2026</b></div>
+        <div><span class="label">Scope</span><b>Desktop + mobile, 6 page types</b></div>
+        <div><span class="label">Output</span><b>48-slide deck, hypothesis table</b></div>
+        <div><span class="label">Deliverable</span><b><a class="flink" href="https://claude.ai/artifact/HmGV91H6KUBykuudX9kAzR" target="_blank" rel="noopener">Open the deck<span class="fa" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></a></b></div>
+      </div>
+      <div class="stage stage-lg vt-aud" aria-label="UX audit deck and table">
+        <img class="scr scr-main" src="audit-res-total.webp" alt="Slide: expected monthly revenue after fixes, from $10,000 now to $12,500 expected">
+        <img class="scr scr-side" src="audit-sheet-conc.webp" alt="Conclusions tab of the audit table with effects per problem group" loading="lazy">
+      </div>
+    </header>
+
+    <div class="note col">
+      <span class="label">About this case</span>
+      <p>An expert review done for a Mavericks Agency client. It is based on best practices and published research, not on the store’s analytics, so the money forecast uses an example store and is meant to be checked with real data and A/B tests.</p>
+    </div>
+
+    <div class="case-body">
+      <aside class="side" aria-label="Case study navigation">
+        <a class="pillback" href="#home"><span aria-hidden="true">←</span>Back to cases</a>
+        <span class="side-label">Quick navigation</span>
+        <ol class="qnav"><li><button data-go="a-context"><span class="n">01</span><span class="t">Context</span></button></li><li><button data-go="a-method"><span class="n">02</span><span class="t">Method</span></button></li><li><button data-go="a-table"><span class="n">03</span><span class="t">Hypothesis table</span></button></li><li><button data-go="a-summary"><span class="n">04</span><span class="t">Summary in numbers</span></button></li><li><button data-go="a-priorities"><span class="n">05</span><span class="t">Priorities</span></button></li><li><button data-go="a-reflect"><span class="n">06</span><span class="t">What I learned</span></button></li></ol>
+      </aside>
+      <div class="case-main">
+
+    <section class="chapter" id="a-context">
+      <span class="num">01 · Context</span>
+      <h2>A well-known store that hides its best arguments.</h2>
+      <div class="prose col">
+        <p>ZELENA has 8,000+ products, 50 world brands, its own import, free gift wrapping and delivery across Kyiv in 1–2 hours. On the site, most of that sits just above the footer or inside a long SEO text. The catalogue is organised by product type and brand, while a gift buyer thinks “something for mom, up to 3,000 UAH”.</p>
+        <p><strong>The brief.</strong> The agency wanted to offer the client two services: a UX audit based on best practices, and a deeper CRO audit with GA4 and heatmaps. My task was the first one, in a format a business owner reads to the end: what is wrong, what to change, and what it is worth.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="a-method">
+      <span class="num">02 · Method</span>
+      <h2>Six page types, two devices, one scoring rule.</h2>
+      <div class="prose col">
+        <p>I went through the live site on desktop and mobile as a gift buyer: home page, navigation and search, category, product page, cart and checkout. Each problem became a hypothesis with a screenshot, the proposed change and a real example of the pattern, mostly from Bloom &amp; Wild.</p>
+        <p>Every hypothesis has an ICE score, the average of Impact, Confidence and Ease. A score of 7.3 or higher means high priority, 6.0 or higher means medium. The deck opens with the summary; the details follow page by page.</p>
+      </div>
+      <figure><a href="audit-summary.webp" target="_blank" rel="noopener"><img src="audit-summary.webp" alt="Slide: 35 growth points, 12 high priority, 29 affect conversion, 5 affect average order, findings by page" loading="lazy"></a><figcaption class="cap">The opening slide: 35 growth points, 12 of them high priority, split by page.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="a-table">
+      <span class="num">03 · Hypothesis table</span>
+      <h2>A table the team can work from.</h2>
+      <div class="prose col">
+        <p>The deck is for the conversation with the client; the table is for the people who will make the changes. Each row has the problem, the device, a link to the screenshot, the hypothesis, an example and the ICE score. Colour shows priority, so the team can sort and start at the top.</p>
+      </div>
+      <figure><a href="audit-sheet-audit.webp" target="_blank" rel="noopener"><img src="audit-sheet-audit.webp" alt="Google Sheet with audit hypotheses grouped by page: problem, device, screenshot link, hypothesis, example and ICE score" loading="lazy"></a><figcaption class="cap">The Audit tab (a fragment). Every hypothesis links to its screenshot and to a working example.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="a-summary">
+      <span class="num">04 · Summary in numbers</span>
+      <h2>The summary shows what the fixes are worth.</h2>
+      <div class="prose col">
+        <p>A list of problems doesn’t tell an owner whether the work pays off. So the audit ends with an executive summary that describes the business benefit in numbers. I grouped the hypotheses by the step of the funnel they affect and gave each group a low and a high effect. For checkout and delivery costs the ranges rest on Baymard Institute research; the rest are marked as expert estimates.</p>
+        <p>Because the effects multiply, for an example store with $10,000 of online revenue a month the forecast is <strong>+17% conservative, +25% expected and +33% optimistic</strong>, or about <strong>+$29,600 a year</strong> in the expected case, with the same traffic and no extra ad budget.</p>
+      </div>
+      <figure><a href="audit-res-table.webp" target="_blank" rel="noopener"><img src="audit-res-table.webp" alt="Slide: impact by problem group, funnel step, expected effect and extra revenue per month" loading="lazy"></a><figcaption class="cap">Impact by problem: each group, the funnel step it moves and the extra revenue per month.</figcaption></figure>
+      <figure><a href="audit-res-total.webp" target="_blank" rel="noopener"><img src="audit-res-total.webp" alt="Slide: monthly revenue now $10,000, conservative $11,700, expected $12,500, optimistic $13,300" loading="lazy"></a><figcaption class="cap">All together: conservative, expected and optimistic revenue after the fixes.</figcaption></figure>
+      <figure><a href="audit-sheet-conc.webp" target="_blank" rel="noopener"><img src="audit-sheet-conc.webp" alt="Conclusions tab: revenue input, effects per problem group, combined growth and extra revenue per year" loading="lazy"></a><figcaption class="cap">The Conclusions tab. The revenue cell is an input: the client puts in their real figure and the forecast updates.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="a-priorities">
+      <span class="num">05 · Priorities</span>
+      <h2>Start with the cheap changes that matter most.</h2>
+      <div class="prose col">
+        <p>The highest scores went to things that cost little to fix: the key advantages sit at the very bottom of the home page, fresh-flower delivery limits appear only in the cart, there is no reassurance under the Buy button, and checkout asks for a patronymic twice.</p>
+      </div>
+      <figure><a href="audit-quickwins.webp" target="_blank" rel="noopener"><img src="audit-quickwins.webp" alt="Slide: top priorities with ICE scores from 8.3 to 7.3" loading="lazy"></a><figcaption class="cap">The top of the priority list, with the page and the metric each change moves.</figcaption></figure>
+    </section>
+
+    <section class="chapter" id="a-reflect">
+      <span class="num">06 · What I learned</span>
+      <h2>What I learned, and what I’d change.</h2>
+      <div class="prose col">
+        <h3>What I learned</h3>
+        <ul>
+          <li><strong>Owners read numbers, teams read rows.</strong> One audit needs two formats: a short story with money for the decision, a sortable table for the work.</li>
+          <li><strong>A forecast needs its sources on the page.</strong> Marking which ranges come from research and which are estimates makes the numbers easier to trust, not harder.</li>
+        </ul>
+        <h3>What I’d do differently</h3>
+        <ul>
+          <li><strong>Get real data first.</strong> With GA4 access the forecast would use ZELENA’s own funnel instead of an example store. That is the next step, the CRO audit.</li>
+          <li><strong>Watch a few real buyers.</strong> Five short sessions would confirm the top hypotheses before anything is built.</li>
+        </ul>
+      </div>
+      <div class="next-case">
+        <div><span class="label">Next case</span><h3>FinGuard</h3></div>
+        <a class="btn" href="#finguard">Read the case</a>
+      </div>
+    </section>
+
+      </div>
+    </div>
+    <footer class="foot" style="margin-top:56px"><span>Kateryna Lenska · Product designer</span><span>Client work at Mavericks Agency.</span></footer>
+  </main>
+
+
+<main id="view-odds" hidden>
+    <a class="back" href="#home"><span aria-hidden="true">←</span>All cases</a>
+
+    <header class="c-hero">
+      <span class="eyebrow">Odds · Self-initiated concept</span>
+      <h1>A prediction-market terminal you can trust</h1>
+      <p class="lede">Prediction markets let people trade on the outcome of real events, and the interfaces are borrowed from crypto exchanges: dense, fast and easy to misread. I designed a terminal that keeps the data density active traders need, but makes every order clear before money moves: what you pay, what you can win, how the market resolves and what happens if the price jumps.</p>
+      <div class="facts-grid">
+        <div class="key"><span class="label">Focus</span><b>Clarity at the moment of risk</b></div>
+        <div><span class="label">Role</span><b>Product designer, solo</b></div>
+        <div><span class="label">Type</span><b>Self-initiated concept</b></div>
+        <div><span class="label">Platform</span><b>Web terminal + mobile</b></div>
+        <div><span class="label">Method</span><b>Review of existing terminals</b></div>
+        <div><span class="label">Output</span><b><a class="flink" href="https://claude.ai/artifact/2WhgUSq3FBdpfRB7itqfJk" target="_blank" rel="noopener">Interactive prototype<span class="fa" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></a></b></div>
+        <div><span class="label">3D</span><b><a class="flink" href="https://my.spline.design/oddscoin-eaGH41wkPrPU0eJyzOAEtht8/" target="_blank" rel="noopener">Brand coin in Spline<span class="fa" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></a></b></div>
+      </div>
+      <div class="stage stage-lg vt-odds" aria-label="Odds terminal screens" style="background:radial-gradient(60% 80% at 0% 0%,rgba(79,124,255,.55),transparent 70%),linear-gradient(120deg,#0B0F1C,#05070C)">
+        <img class="cover-full" src="odds-cover3.webp" alt="Odds trading terminal on a tablet-style screen">
+      </div>
+    </header>
+
+    <div class="note col">
+      <span class="label">About this case</span>
+      <p>A self-initiated concept, built quickly as a coded prototype. I trade crypto myself, so the problems come from my own use and from reviewing popular prediction-market and exchange interfaces. It has not been tested with traders yet; that is the next step, and the case says where my reasoning would need evidence.</p>
+    </div>
+
+    <div class="case-body">
+      <aside class="side" aria-label="Case study navigation">
+        <a class="pillback" href="#home"><span aria-hidden="true">←</span>Back to cases</a>
+        <span class="side-label">Quick navigation</span>
+        <ol class="qnav"><li><button data-go="d-problem"><span class="n">01</span><span class="t">Problem</span></button></li><li><button data-go="d-layout"><span class="n">02</span><span class="t">Layout</span></button></li><li><button data-go="d-ticket"><span class="n">03</span><span class="t">Order ticket</span></button></li><li><button data-go="d-guard"><span class="n">04</span><span class="t">Price protection</span></button></li><li><button data-go="d-mobile"><span class="n">05</span><span class="t">Mobile</span></button></li><li><button data-go="d-3d"><span class="n">06</span><span class="t">Brand in 3D</span></button></li><li><button data-go="d-next"><span class="n">07</span><span class="t">Next steps</span></button></li></ol>
+      </aside>
+      <div class="case-main">
+
+    <section class="chapter" id="d-problem">
+      <span class="num">01 · Problem</span>
+      <h2>Fast to trade, easy to misread.</h2>
+      <div class="prose col">
+        <p>Reviewing popular prediction-market terminals and crypto exchanges, I kept meeting the same gaps. A price of 62¢ is really a 62% chance, but the ticket rarely says what that means for your money. How the market resolves is hidden behind a “Rules” tab, yet it is the one thing that decides whether you win. Large orders move the price, and the user learns the real average price only after the fill. And charts show that the price jumped, not why.</p>
+        <p><strong>The goal:</strong> keep the density an active trader expects, and remove every surprise between “I want to buy” and “I bought”.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="d-layout">
+      <span class="num">02 · Layout</span>
+      <h2>Three columns: find, understand, act.</h2>
+      <div class="prose col">
+        <p>Trending markets sit in a strip under the navigation, each with its price and daily change. The market takes the main column: a candlestick chart, then one summary card with the chance as the hero number, volume, liquidity and spread, and the resolution rule with its source, not hidden in a tab. The order ticket stays on the right, so the action never scrolls away. The visual language is dark glass with one blue accent; green and red are kept only for Yes, No and profit or loss, so colour always means something.</p>
+      </div>
+      <figure><a href="odds-frame.webp" target="_blank" rel="noopener"><img class="bare" src="odds-frame.webp" alt="Full terminal: trending strip, candlestick chart with news, market summary card, order book, positions and order ticket" loading="lazy"></a><figcaption class="cap">The terminal at 1440px. Prices use tabular figures, and the order book a monospaced font, so columns stay aligned while numbers update.</figcaption></figure>
+      <figure><img class="bare" src="odds-hero.webp" alt="Market summary card: 62% chance, up 4.1 points, volume, liquidity, 24h volume, spread and the resolution rule" loading="lazy"><figcaption class="cap">One card answers “where is this market now?”: chance, change today, liquidity and how it resolves.</figcaption></figure>
+      <div class="decision">
+        <h3>News on the chart</h3>
+        <p><b>Problem.</b> A line that jumps from 48% to 56% tells you something happened, not what.</p>
+        <p><b>Change.</b> Events that moved the market sit on the candlestick chart as labelled markers: “Eurozone CPI 2.1%”, “Lagarde speech”. The current price is pinned on the right axis.</p>
+        <p><b>Why.</b> Traders decide whether a move is noise or news. Putting the cause next to the move saves a trip to another tab.</p>
+        <figure><img class="bare" src="odds-chart.webp" alt="Candlestick chart of the Yes price with news markers and the current price pinned on the axis" loading="lazy"></figure>
+      </div>
+      <div class="decision">
+        <h3>An order book that reads at a glance</h3>
+        <p><b>Change.</b> Asks in red, bids in green, depth bars behind each row, the spread and last price between them, and a dot that marks the user’s own resting order.</p>
+        <p><b>Why.</b> Depth bars show where liquidity sits without reading numbers; the dot answers “where is my order?” without opening another list.</p>
+        <figure><img class="bare" src="odds-book.webp" alt="Order book with depth bars, spread row and the user's own order marked" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="d-ticket">
+      <span class="num">03 · Order ticket</span>
+      <h2>Say what the order means in money.</h2>
+      <div class="decision">
+        <h3>Payout and max loss before you click</h3>
+        <p><b>Problem.</b> “3,962 shares at 63.1¢” is precise but doesn’t answer the real question: what do I get, and what can I lose?</p>
+        <p><b>Change.</b> The summary shows average price, shares, price impact and fee, then payout if Yes and max loss. Under it, one plain sentence: “You pay $2,500. If the ECB cuts in December you get $3,962. If it doesn’t, you lose what you paid.”</p>
+        <p><b>Why.</b> Experienced traders read the numbers; newer ones read the sentence. Both see the same truth before they commit.</p>
+        <figure><img class="bare" src="odds-ticket.webp" style="max-width:352px;margin-inline:auto" alt="Order ticket with Yes/No prices, amount, summary, plain-language sentence and price-impact warning" loading="lazy"></figure>
+        <p class="trade"><b>Trade-off.</b> The sentence adds height to a dense ticket. I kept it because it is the only place the outcome is said in words, and it disappears for limit orders, where the payout is not known yet.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="d-guard">
+      <span class="num">04 · Price protection</span>
+      <h2>If the price moves, ask again.</h2>
+      <div class="decision">
+        <h3>Warn before, pause after</h3>
+        <p><b>Before.</b> When an order will move the price by more than 1%, the ticket says so and offers a limit order as the alternative, with its own trade-off: it may not fill right away.</p>
+        <p><b>After.</b> With protection on, if Yes moves from 62¢ to 64¢ while the user reviews, the order is paused, not filled, and nothing is charged. The dialog puts “when you started” next to “now”, shows the new payout, and offers two clear choices: buy at the new price, or place a limit at the old one.</p>
+        <p><b>Why.</b> Slippage is where trust breaks: people blame the product, not the market. Showing the change and asking again turns a bad surprise into a decision.</p>
+        <figure><img class="bare" src="odds-modal.webp" style="max-width:440px;margin-inline:auto" alt="Dialog: the price moved while you reviewed, comparing 62¢ and 3,962 shares with 64¢ and 3,880 shares, with two actions" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="d-mobile">
+      <span class="num">05 · Mobile</span>
+      <h2>On a phone, the ticket is a sheet.</h2>
+      <div class="prose col">
+        <p>On a phone the market screen keeps what a trader checks first: the chance and its change, time to close, volume, liquidity and spread, a candlestick chart with the key news marker and the current price, the resolution rule and the user’s own position with its profit. Two buttons stay at the bottom, “Buy Yes 62¢” and “Buy No 39¢”. Tapping one opens the ticket as a sheet with the same payout, max loss and plain-language sentence as on desktop. The order book moves to its own tab, because on a small screen the decision matters more than the depth.</p>
+      </div>
+      <figure><img class="bare" src="odds-mobile.webp" alt="Two phone screens: the market with chance, key numbers, chart, rule and position, and the order ticket opened as a bottom sheet" loading="lazy" style="max-width:720px;margin-inline:auto"></figure>
+    </section>
+
+    <section class="chapter" id="d-3d">
+      <span class="num">06 · Brand in 3D</span>
+      <h2>The mark, made into a coin.</h2>
+      <div class="prose col">
+        <p>Crypto products live on their visuals: launch banners, app icons, social posts. I modelled the Odds mark as a 3D coin in Spline to give the brand a hero object for these places. The coin and the raised mark use metal materials, coloured point lights add the violet and blue reflections from the product palette, and a directional light casts the shadow that makes the mark read as relief.</p>
+        <p>I built the scene by hand: geometry, materials, lighting and shadows, and exported it for the web.</p>
+      </div>
+      <figure><img src="odds-coin.webp" alt="3D metal coin with the Odds mark in relief, lit with violet and blue light on a dark gradient" loading="lazy"><figcaption class="cap">Odds coin, modelled and lit in Spline.</figcaption></figure>
+      <p><a class="flink" href="https://my.spline.design/oddscoin-eaGH41wkPrPU0eJyzOAEtht8/" target="_blank" rel="noopener">Open the 3D scene<span class="fa" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span></a></p>
+    </section>
+
+    <section class="chapter" id="d-next">
+      <span class="num">07 · Next steps</span>
+      <h2>What I’d test first.</h2>
+      <div class="prose col">
+        <ul>
+          <li><strong>Five sessions with active traders.</strong> Does the plain-language sentence help or slow them down? Do they trust a paused order, or find it annoying?</li>
+          <li><strong>Default protection level.</strong> 1¢ is my guess; the right default depends on market liquidity and should come from data.</li>
+          <li><strong>Metrics.</strong> Share of orders cancelled after fill, support tickets about “wrong price”, and how often people switch from market to limit after the warning.</li>
+        </ul>
+        <p><a class="btn" href="https://claude.ai/artifact/2WhgUSq3FBdpfRB7itqfJk" target="_blank" rel="noopener">Open the prototype ↗</a></p>
+      </div>
+      <div class="next-case">
+        <div><span class="label">Next case</span><h3>FinGuard</h3></div>
+        <a class="btn" href="#finguard">Read the case</a>
+      </div>
+    </section>
+
+      </div>
+    </div>
+    <footer class="foot" style="margin-top:56px"><span>Kateryna Lenska · Product designer</span><span>Self-initiated concept.</span></footer>
+  </main>
+
+
+
+</div>
+</div>
+
+<script>
+(function(){
+  var V={home:document.getElementById('view-home'),about:document.getElementById('view-about'),finguard:document.getElementById('view-finguard'),koh:document.getElementById('view-koh'),olx:document.getElementById('view-olx'),audit:document.getElementById('view-audit'),odds:document.getElementById('view-odds'),resume:document.getElementById('view-resume')};
+  var T={home:'Kateryna Lenska — Product Design',about:'About — Kateryna Lenska',finguard:'FinGuard — Kateryna Lenska',koh:'Kyiv Educational Hub — Kateryna Lenska',olx:'OLX for Business — Kateryna Lenska',audit:'ZELENA UX audit — Kateryna Lenska',odds:'Odds terminal — Kateryna Lenska',resume:'Resume — Kateryna Lenska'};
+  var cur=null,homeY=0;
+  function show(){
+    var h=(location.hash||'').slice(1); var k=V[h]?h:'home';
+    if(cur==='home')homeY=window.scrollY;
+    for(var n in V) V[n].hidden=n!==k;
+    document.querySelectorAll('[data-nav]').forEach(function(a){if(a.dataset.nav===k||((k==='finguard'||k==='koh'||k==='olx'||k==='audit'||k==='odds')&&a.dataset.nav==='home'))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+    document.title=T[k]; window.scrollTo(0,(k==='home'&&(cur==='finguard'||cur==='koh'||cur==='olx'||cur==='audit'||cur==='odds'))?homeY:0); cur=k; if(typeof spy==='function')spy();
+  }
+  document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(){var el=document.getElementById(b.getAttribute('data-go'));if(el)el.scrollIntoView()})});
+  var copy=document.getElementById('copy'),out=document.getElementById('copied'),mail=document.getElementById('mail');
+  copy.addEventListener('click',function(){
+    function sel(){var r=document.createRange();r.selectNodeContents(mail);var s=window.getSelection();s.removeAllRanges();s.addRange(r);out.textContent='Selected. Press Ctrl+C or ⌘C to copy.'}
+    try{navigator.clipboard.writeText(mail.textContent).then(function(){out.textContent='Email copied.'},sel)}catch(e){sel()}
+  });
+  var root=document.documentElement,tb=document.getElementById('theme'),mq=window.matchMedia('(prefers-color-scheme: dark)');
+  function eff(){var t=root.getAttribute('data-theme');return t||(mq.matches?'dark':'light')}
+  function sync(){var d=eff()==='dark';root.classList.toggle('is-dark',d);tb.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme')}
+  try{var saved=localStorage.getItem('theme');if(saved==='light'||saved==='dark')root.setAttribute('data-theme',saved)}catch(e){}
+  tb.addEventListener('click',function(){var n=eff()==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('theme',n)}catch(e){}sync()});
+  if(mq.addEventListener)mq.addEventListener('change',sync);
+  sync();
+
+  function spy(){
+    var v=!V.finguard.hidden?V.finguard:!V.koh.hidden?V.koh:!V.olx.hidden?V.olx:!V.audit.hidden?V.audit:!V.odds.hidden?V.odds:null; if(!v)return;
+    var qbtns=[].slice.call(v.querySelectorAll('.qnav button')); if(!qbtns.length)return;
+    var line=window.innerHeight*0.35,act=qbtns[0];
+    qbtns.forEach(function(b){var el=document.getElementById(b.dataset.go);if(el&&el.getBoundingClientRect().top<=line)act=b});
+    qbtns.forEach(function(b){if(b===act)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});
+  }
+  window.addEventListener('scroll',spy,{passive:true});window.addEventListener('resize',spy);
+
+  var lb=null;
+  function closeLb(){if(lb){lb.remove();lb=null;document.body.style.overflow=''}}
+  document.addEventListener('click',function(e){
+    var img=e.target.closest('main figure img'); if(!img||e.target.closest('.stage')||lb)return;
+    e.preventDefault(); openLb(img);
+  });
+  function openLb(img){
+    lb=document.createElement('div'); lb.className='lb'; lb.setAttribute('role','dialog'); lb.setAttribute('aria-label','Image preview');
+    lb.innerHTML='<div class="stagebox"><img alt=""></div><button class="x" type="button" aria-label="Close">×</button><div class="ctrl"><button type="button" data-z="out" aria-label="Zoom out">−</button><span>100%</span><button type="button" data-z="in" aria-label="Zoom in">+</button><button type="button" class="fit" data-z="fit">Fit</button></div>';
+    var big=lb.querySelector('img'), box=lb.querySelector('.stagebox'), pct=lb.querySelector('.ctrl span');
+    big.src=img.currentSrc||img.src; big.alt=img.alt;
+    document.body.appendChild(lb); document.body.style.overflow='hidden';
+    var s=1,tx=0,ty=0,MIN=1,MAX=6;
+    function apply(){big.style.transform='translate('+tx+'px,'+ty+'px) scale('+s+')';pct.textContent=Math.round(s*100)+'%'}
+    function clamp(){var r=big.getBoundingClientRect(),w=big.offsetWidth*s,h=big.offsetHeight*s,vw=innerWidth,vh=innerHeight;
+      var bx=big.offsetLeft+box.offsetLeft, by=big.offsetTop+box.offsetTop;
+      if(w<=vw)tx=(1-s)*big.offsetWidth/2; else tx=Math.min(-bx+16+0, Math.max(vw-16-bx-w, tx)) ;
+      if(h<=vh)ty=(1-s)*big.offsetHeight/2; else ty=Math.min(-by+16, Math.max(vh-80-by-h, ty));}
+    function zoomAt(ns,cx,cy){ns=Math.max(MIN,Math.min(MAX,ns));var bx=big.offsetLeft+box.offsetLeft,by=big.offsetTop+box.offsetTop;
+      var px=(cx-bx-tx)/s, py=(cy-by-ty)/s; s=ns; tx=cx-bx-px*s; ty=cy-by-py*s; clamp(); apply();}
+    function center(){return [innerWidth/2,innerHeight/2]}
+    lb.addEventListener('wheel',function(e){e.preventDefault();
+      if(e.ctrlKey||s===1||Math.abs(e.deltaY)>Math.abs(e.deltaX)&&!e.shiftKey&&e.ctrlKey){zoomAt(s*Math.exp(-e.deltaY*(e.ctrlKey?0.012:0.004)),e.clientX,e.clientY)}
+      else{tx-=e.deltaX;ty-=e.deltaY;clamp();apply()}
+    },{passive:false});
+    var pts=new Map(),last=null,pinch=null,moved=false;
+    lb.addEventListener('pointerdown',function(e){if(e.target.closest('.ctrl,.x'))return;pts.set(e.pointerId,[e.clientX,e.clientY]);moved=false;lb.setPointerCapture(e.pointerId);
+      if(pts.size===1){last=[e.clientX,e.clientY];big.classList.add('drag')}
+      if(pts.size===2){var a=[...pts.values()];pinch={d:Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]),s:s}}});
+    lb.addEventListener('pointermove',function(e){if(!pts.has(e.pointerId))return;pts.set(e.pointerId,[e.clientX,e.clientY]);
+      if(pts.size===2&&pinch){var a=[...pts.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);zoomAt(pinch.s*d/pinch.d,(a[0][0]+a[1][0])/2,(a[0][1]+a[1][1])/2);moved=true;return}
+      if(pts.size===1&&last){var dx=e.clientX-last[0],dy=e.clientY-last[1];if(Math.abs(dx)+Math.abs(dy)>3)moved=true;if(s>1){tx+=dx;ty+=dy;clamp();apply()}last=[e.clientX,e.clientY]}});
+    function up(e){pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!pts.size){big.classList.remove('drag');last=null}}
+    lb.addEventListener('pointerup',function(e){var wasMoved=moved;up(e);
+      if(!wasMoved&&!e.target.closest('.ctrl,.x')&&e.target!==big)closeLb();});
+    lb.addEventListener('pointercancel',up);
+    big.addEventListener('dblclick',function(e){if(s>1){s=1;tx=0;ty=0;apply()}else zoomAt(2.5,e.clientX,e.clientY)});
+    lb.querySelector('.x').addEventListener('click',closeLb);
+    lb.querySelector('.ctrl').addEventListener('click',function(e){var z=e.target.closest('button');if(!z)return;var c=center();
+      if(z.dataset.z==='in')zoomAt(s*1.5,c[0],c[1]); else if(z.dataset.z==='out')zoomAt(s/1.5,c[0],c[1]); else {s=1;tx=0;ty=0;apply()}});
+    apply(); lb.querySelector('.x').focus();
+  }
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb()});
+  window.addEventListener('hashchange',closeLb);
+
+  (function(){
+    var sc=document.getElementById('cv-scroll'),doc=document.getElementById('cvdoc'),pct=document.getElementById('cv-pct');if(!sc)return;
+    var z=1,user=false,PW=doc.offsetWidth||794;
+    function fit(){var w=sc.clientWidth-32;return Math.min(1,Math.max(.3,w/PW))}
+    function set(nz,cx,cy){nz=Math.max(.3,Math.min(3,nz));var r=sc.getBoundingClientRect();cx=cx==null?r.width/2:cx-r.left;cy=cy==null?r.height/2:cy-r.top;
+      var fx=(sc.scrollLeft+cx)/z,fy=(sc.scrollTop+cy)/z;z=nz;doc.style.zoom=z;sc.scrollLeft=fx*z-cx;sc.scrollTop=fy*z-cy;pct.textContent=Math.round(z*100)+'%'}
+    function refit(){if(!user)set(fit())}
+    document.querySelector('.cv-tools').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+      if(b.dataset.cz==='fit'){user=false;set(fit());sc.scrollTop=0;return}user=true;set(z*(b.dataset.cz==='in'?1.25:0.8))});
+    sc.addEventListener('wheel',function(e){if(!e.ctrlKey)return;e.preventDefault();user=true;set(z*Math.exp(-e.deltaY*0.01),e.clientX,e.clientY)},{passive:false});
+    var p=new Map(),pin=null;
+    sc.addEventListener('pointerdown',function(e){if(e.pointerType!=='touch')return;p.set(e.pointerId,[e.clientX,e.clientY]);if(p.size===2){var a=[...p.values()];pin={d:Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]),z:z}}});
+    sc.addEventListener('pointermove',function(e){if(!p.has(e.pointerId))return;p.set(e.pointerId,[e.clientX,e.clientY]);if(p.size===2&&pin){e.preventDefault();var a=[...p.values()],d=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);user=true;set(pin.z*d/pin.d,(a[0][0]+a[1][0])/2,(a[0][1]+a[1][1])/2)}});
+    function up(e){p.delete(e.pointerId);if(p.size<2)pin=null}sc.addEventListener('pointerup',up);sc.addEventListener('pointercancel',up);
+    window.addEventListener('resize',refit);window.addEventListener('hashchange',function(){setTimeout(refit,50)});setTimeout(refit,50);
+  })();
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function route(){
+    if(document.startViewTransition&&!reduce.matches){document.startViewTransition(show)}else{show()}
+  }
+  document.documentElement.style.scrollBehavior='auto';
+  window.addEventListener('hashchange',route);show();
+})();
+</script>
