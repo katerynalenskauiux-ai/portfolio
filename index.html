@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Kateryna Lenska — Product Design</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,6 +73,7 @@ p{margin:0}
 .vt-olx{view-transition-name:olx-stage}
 .vt-aud{view-transition-name:aud-stage}
 .vt-odds{view-transition-name:odds-stage}
+.vt-pd{view-transition-name:pd-stage}
 ::view-transition-group(aud-stage){animation-duration:.7s;animation-timing-function:cubic-bezier(.22,.8,.24,1)}
 ::view-transition-old(aud-stage),::view-transition-new(aud-stage){height:100%;width:100%;object-fit:cover;object-position:top left}
 ::view-transition-group(olx-stage){animation-duration:.7s;animation-timing-function:cubic-bezier(.22,.8,.24,1)}
@@ -430,6 +432,17 @@ figure img.bare{background:none!important;box-shadow:none!important;border-radiu
     </section>
 
     <div class="cases">
+      <a class="case-card" href="#podorozi">
+        <div class="stage vt-pd" style="background:radial-gradient(60% 80% at 100% 0%,rgba(226,186,72,.35),transparent 70%),linear-gradient(120deg,#1A1B1E,#0B0C0E)">
+          <img class="cover-full" src="pd-cover.webp" alt="poDorozi app screens: sign-in, creating a trip and a found group" loading="eager">
+        </div>
+        <div class="case-meta">
+          <h2>poDorozi: sharing a taxi when the metro stops</h2>
+          <p>My own startup: an app that helps train passengers and people stuck on one bank during air-raid alerts find others going their way and split the fare.</p>
+          <div class="tags"><span>Own startup · 2026</span><span>Mobile · iOS</span><span>0→1</span><span class="go">Read the case →</span></div>
+        </div>
+      </a>
+
       <a class="case-card" href="#odds">
         <div class="stage vt-odds" style="background:radial-gradient(60% 80% at 0% 0%,rgba(79,124,255,.55),transparent 70%),linear-gradient(120deg,#0B0F1C,#05070C)">
           <img class="cover-full" src="odds-cover3.webp" alt="Odds trading terminal on a tablet-style screen" loading="eager">
@@ -1640,6 +1653,142 @@ figure img.bare{background:none!important;box-shadow:none!important;border-radiu
     <footer class="foot" style="margin-top:56px"><span>Kateryna Lenska · Product designer</span><span>Self-initiated concept.</span></footer>
   </main>
 
+<main id="view-podorozi" hidden>
+    <a class="back" href="#home"><span aria-hidden="true">←</span>All cases</a>
+
+    <header class="c-hero">
+      <span class="eyebrow">poDorozi · My own startup</span>
+      <h1>Sharing a taxi when the metro stops</h1>
+      <p class="lede">At night, and during every air-raid alert, Kyiv’s metro stops running across the Dnipro bridges. Trains arrive late, hundreds of people come out of the station at once, and each of them orders a separate, overpriced taxi. poDorozi lets passengers from the same train, or people stuck on the same bank, find each other, see their share of the fare before they join, and leave together.</p>
+      <div class="facts-grid">
+        <div class="key"><span class="label">Focus</span><b>A shared ride in under two minutes</b></div>
+        <div><span class="label">Role</span><b>Founder, product designer</b></div>
+        <div><span class="label">Type</span><b>Own startup, 0→1</b></div>
+        <div><span class="label">Platform</span><b>iOS app, mobile-first</b></div>
+        <div><span class="label">Started from</span><b>My own night at the station</b></div>
+        <div><span class="label">Status</span><b>Designed · MVP spec ready</b></div>
+        <div><span class="label">Next</span><b>Coded prototype, App Store</b></div>
+      </div>
+      <div class="stage stage-lg vt-pd" aria-label="poDorozi app screens" style="background:radial-gradient(60% 80% at 100% 0%,rgba(226,186,72,.35),transparent 70%),linear-gradient(120deg,#1A1B1E,#0B0C0E)">
+        <img class="cover-full" src="pd-cover.webp" alt="Three poDorozi screens: sign-in over a Kyiv photo, creating a trip on a dark map, and a found group with each person's share">
+      </div>
+    </header>
+
+    <div class="note col">
+      <span class="label">About this case</span>
+      <p>poDorozi is my own product, and I designed it end to end: the problem framing, the flows and the interface. The idea comes from one night I lived through myself, not from research yet. Prices on the screens are estimates for the design, and the app has not been tested with passengers; that is the next step, and the case says what I still need to prove. Kyiv photos by Maksym Tymchyk.</p>
+    </div>
+
+    <div class="case-body">
+      <aside class="side" aria-label="Case study navigation">
+        <a class="pillback" href="#home"><span aria-hidden="true">←</span>Back to cases</a>
+        <span class="side-label">Quick navigation</span>
+        <ol class="qnav"><li><button data-go="p-problem"><span class="n">01</span><span class="t">Problem</span></button></li><li><button data-go="p-flow"><span class="n">02</span><span class="t">Flow</span></button></li><li><button data-go="p-trip"><span class="n">03</span><span class="t">Creating a trip</span></button></li><li><button data-go="p-match"><span class="n">04</span><span class="t">Matching</span></button></li><li><button data-go="p-room"><span class="n">05</span><span class="t">Trip room</span></button></li><li><button data-go="p-visual"><span class="n">06</span><span class="t">Visual language</span></button></li><li><button data-go="p-next"><span class="n">07</span><span class="t">Next</span></button></li></ol>
+      </aside>
+      <div class="case-main">
+
+    <section class="chapter" id="p-problem">
+      <span class="num">01 · Problem</span>
+      <h2>A hundred people, a hundred taxis.</h2>
+      <div class="prose col">
+        <p>My train to Kyiv arrived four hours late, at about 11 pm, during an air-raid alert. There was no metro and no public transport, taxi prices had jumped, and around me about a hundred people were each ordering their own car, often to the same districts. Most of those cars left with one or two passengers.</p>
+        <p>The pattern repeats every night: the metro doesn’t run after midnight, and during an alert it stops on the bridges between the left and right bank, day or night. The railway station is where the problem is sharpest, because a whole train of people needs a ride at the same moment.</p>
+        <p><strong>The goal:</strong> help people who are going the same way find each other fast, trust each other enough to share a car, and know what they will pay before they commit.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="p-flow">
+      <span class="num">02 · Flow</span>
+      <h2>Sign in once, create a trip in one screen.</h2>
+      <div class="prose col">
+        <p>The main path is short on purpose: sign in, say where you are and where you’re going, see the groups going your way, join one, meet and leave. Everything that is not on that path waits in the profile.</p>
+      </div>
+      <div class="decision">
+        <h3>A phone number that others never see</h3>
+        <p><b>Problem.</b> Sharing a car with strangers needs some identity, but people don’t want to give their number to everyone in the group.</p>
+        <p><b>Change.</b> Sign-in by phone number or Apple. The sign-in screen says it in one line: “Only you see your number. Passengers see your name and rating.” The value is stated before the form: about 100 ₴ instead of 400 ₴, 2–4 passengers per car.</p>
+        <p><b>Why.</b> A verified number makes the group safer, and saying who sees what removes the main reason to drop off at the first step.</p>
+        <figure><img class="bare" src="pd-onboard.webp" style="max-width:640px;margin-inline:auto" alt="Sign-in screen over a Kyiv photo with the savings and passenger count, and the SMS code screen" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="p-trip">
+      <span class="num">03 · Creating a trip</span>
+      <h2>Start the trip while you’re still on the train.</h2>
+      <div class="decision">
+        <h3>“I’m on the train” or “I’m already at the point”</h3>
+        <p><b>Problem.</b> If people search only after they get off, the crowd at the exit is already ordering taxis.</p>
+        <p><b>Change.</b> The first control is a switch between two situations. On the train, you enter the train number, and the app shows its real delay (“+4 h 50 min”), so the group plans around the actual arrival, not the timetable. Then the pickup point, the address and how many people travel with you.</p>
+        <p><b>Why.</b> Matching before arrival is the whole advantage over ordering a taxi at the exit. The delay comes from the train, so nobody has to guess it.</p>
+      </div>
+      <div class="decision">
+        <h3>Pickup points that know about air-raid alerts</h3>
+        <p><b>Problem.</b> During an alert people should not wait outside, and the usual meeting places stop making sense when the metro stops on the bridges.</p>
+        <p><b>Change.</b> A red banner on the map says what is happening: “Alert · metro over the bridges has stopped · shelter 120 m”. The list of pickup points covers the station and metro stations on both banks, each with the distance to the nearest shelter.</p>
+        <p><b>Why.</b> poDorozi is useful exactly when the city is under alert. The design treats that as the normal case, not an error state.</p>
+        <figure><img class="bare" src="pd-create.webp" alt="Trip form with train number and delay, the pickup point list with shelter distances, and the search screen" loading="lazy"><figcaption class="cap">Form, pickup points with shelters, and the search state. One screen holds the whole trip; the map stays visible behind the sheet.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="p-match">
+      <span class="num">04 · Matching</span>
+      <h2>Show the price per person before anyone joins.</h2>
+      <div class="decision">
+        <h3>Compare groups by what matters</h3>
+        <p><b>Problem.</b> People decide whether to share a ride by three things: how far it is from their address, how long they will wait, and how much they save.</p>
+        <p><b>Change.</b> Each group card shows the destination, departure time and how far it is from yours (“+3 min”), who is already in, free seats, and your estimated share in large type. The closest group is marked “Best match”. If nothing fits, “Create your own trip” is always at the end of the list.</p>
+        <p><b>Why.</b> The share is the reason to use the app at all, so it is the biggest number on the card. The note above the list says the price is an estimate and the final sum depends on the taxi.</p>
+        <figure><img class="bare" src="pd-s06.webp" style="max-width:300px;margin-inline:auto" alt="List of three trips going the same way, each with departure time, passengers and the share per person" loading="lazy"></figure>
+        <p class="trade"><b>Trade-off.</b> An estimate can be wrong when taxi prices jump. I chose to show it anyway, marked as approximate, because a range people can trust is better than no number at all; the exact split is confirmed in the trip room.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="p-room">
+      <span class="num">05 · Trip room</span>
+      <h2>One place to meet, talk and leave together.</h2>
+      <div class="decision">
+        <h3>Everything the group needs on one screen</h3>
+        <p><b>Change.</b> The top card shows the route, departure time and how many seats are filled. Below it: your share and saving, the meeting point (“central entrance, by the departure board; during an alert wait in the shelter, 120 m”), the group chat and one button, “Ready to go”.</p>
+        <p><b>Why.</b> Strangers meeting at night need certainty: where exactly, when exactly, and who. Keeping it in one room means nobody switches to a messenger and loses the group.</p>
+      </div>
+      <div class="decision">
+        <h3>When a train is late, the group moves with it</h3>
+        <p><b>Change.</b> If one passenger’s train is delayed, the room shows it at the top: “Train delayed by 10 min. Group departure moved to 23:50.”</p>
+        <p><b>Why.</b> Delays are the usual case on Ukrainian railways now. Saying it in the room prevents the group from leaving without someone or waiting without knowing why.</p>
+        <figure><img class="bare" src="pd-room.webp" style="max-width:640px;margin-inline:auto" alt="Trip room with seats, share, meeting point and chat, and the same room after a train delay moved the departure" loading="lazy"></figure>
+      </div>
+      <div class="decision">
+        <h3>A finish that shows the point</h3>
+        <p><b>Change.</b> After the ride the app shows what you saved compared with going alone, asks for a rating, and the profile adds up savings over all trips.</p>
+        <p><b>Why.</b> Ratings build the trust the next group needs, and a visible saving is the best reason to open the app again on the next late train.</p>
+        <figure><img class="bare" src="pd-end.webp" style="max-width:640px;margin-inline:auto" alt="Profile with rating and total saved, and the end-of-trip screen with savings and a five-star rating" loading="lazy"></figure>
+      </div>
+    </section>
+
+    <section class="chapter" id="p-visual">
+      <span class="num">06 · Visual language</span>
+      <h2>Calm at night, not another taxi app.</h2>
+      <div class="prose col">
+        <p>The app is used late, often in the dark and under stress, so the interface is dark grey with one muted yellow accent for the main action and the money. Controls live on floating glass sheets with large radii, inset from the screen edges, in the style of the latest iOS. The map is dark and simple: just the route, the pickup point and the bridges.</p>
+        <p>Splash and sign-in screens use real photographs of Kyiv, the left bank, the bridges, Podil, by photographer Maksym Tymchyk, so the product feels local from the first screen. I avoided taxi-service clichés like checkered patterns and bright yellow cars: this is about people going the same way, not about cars.</p>
+      </div>
+    </section>
+
+    <section class="chapter" id="p-next">
+      <span class="num">07 · Next</span>
+      <h2>What I still need to prove.</h2>
+      <div class="prose col">
+        <p>I wrote the MVP specification for a mobile web version: create a trip from Kyiv-Pasazhyrskyi, match by direction and time, a group chat and the estimated share. Next I will build it as a coded prototype and test it with real passengers at the station.</p>
+        <p>The open questions are the ones that decide whether poDorozi works at all: will strangers agree to share a car at night, what makes them trust the group (rating, verified phone, photo), and how the group splits the payment when one person orders the taxi. After that, the App Store.</p>
+      </div>
+    </section>
+
+      </div>
+    </div>
+    <footer class="foot" style="margin-top:56px"><span>Kateryna Lenska · Product designer</span><span>My own startup, in progress.</span></footer>
+  </main>
+
+
 
 
 </div>
@@ -1647,15 +1796,15 @@ figure img.bare{background:none!important;box-shadow:none!important;border-radiu
 
 <script>
 (function(){
-  var V={home:document.getElementById('view-home'),about:document.getElementById('view-about'),finguard:document.getElementById('view-finguard'),koh:document.getElementById('view-koh'),olx:document.getElementById('view-olx'),audit:document.getElementById('view-audit'),odds:document.getElementById('view-odds'),resume:document.getElementById('view-resume')};
-  var T={home:'Kateryna Lenska — Product Design',about:'About — Kateryna Lenska',finguard:'FinGuard — Kateryna Lenska',koh:'Kyiv Educational Hub — Kateryna Lenska',olx:'OLX for Business — Kateryna Lenska',audit:'ZELENA UX audit — Kateryna Lenska',odds:'Odds terminal — Kateryna Lenska',resume:'Resume — Kateryna Lenska'};
+  var V={home:document.getElementById('view-home'),about:document.getElementById('view-about'),finguard:document.getElementById('view-finguard'),koh:document.getElementById('view-koh'),olx:document.getElementById('view-olx'),audit:document.getElementById('view-audit'),odds:document.getElementById('view-odds'),podorozi:document.getElementById('view-podorozi'),resume:document.getElementById('view-resume')};
+  var T={home:'Kateryna Lenska — Product Design',about:'About — Kateryna Lenska',finguard:'FinGuard — Kateryna Lenska',koh:'Kyiv Educational Hub — Kateryna Lenska',olx:'OLX for Business — Kateryna Lenska',audit:'ZELENA UX audit — Kateryna Lenska',odds:'Odds terminal — Kateryna Lenska',podorozi:'poDorozi — Kateryna Lenska',resume:'Resume — Kateryna Lenska'};
   var cur=null,homeY=0;
   function show(){
     var h=(location.hash||'').slice(1); var k=V[h]?h:'home';
     if(cur==='home')homeY=window.scrollY;
     for(var n in V) V[n].hidden=n!==k;
-    document.querySelectorAll('[data-nav]').forEach(function(a){if(a.dataset.nav===k||((k==='finguard'||k==='koh'||k==='olx'||k==='audit'||k==='odds')&&a.dataset.nav==='home'))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
-    document.title=T[k]; window.scrollTo(0,(k==='home'&&(cur==='finguard'||cur==='koh'||cur==='olx'||cur==='audit'||cur==='odds'))?homeY:0); cur=k; if(typeof spy==='function')spy();
+    document.querySelectorAll('[data-nav]').forEach(function(a){if(a.dataset.nav===k||((k==='finguard'||k==='koh'||k==='olx'||k==='audit'||k==='odds'||k==='podorozi')&&a.dataset.nav==='home'))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+    document.title=T[k]; window.scrollTo(0,(k==='home'&&(cur==='finguard'||cur==='koh'||cur==='olx'||cur==='audit'||cur==='odds'||cur==='podorozi'))?homeY:0); cur=k; if(typeof spy==='function')spy();
   }
   document.querySelectorAll('[data-go]').forEach(function(b){b.addEventListener('click',function(){var el=document.getElementById(b.getAttribute('data-go'));if(el)el.scrollIntoView()})});
   var copy=document.getElementById('copy'),out=document.getElementById('copied'),mail=document.getElementById('mail');
@@ -1672,7 +1821,7 @@ figure img.bare{background:none!important;box-shadow:none!important;border-radiu
   sync();
 
   function spy(){
-    var v=!V.finguard.hidden?V.finguard:!V.koh.hidden?V.koh:!V.olx.hidden?V.olx:!V.audit.hidden?V.audit:!V.odds.hidden?V.odds:null; if(!v)return;
+    var v=!V.finguard.hidden?V.finguard:!V.koh.hidden?V.koh:!V.olx.hidden?V.olx:!V.audit.hidden?V.audit:!V.odds.hidden?V.odds:!V.podorozi.hidden?V.podorozi:null; if(!v)return;
     var qbtns=[].slice.call(v.querySelectorAll('.qnav button')); if(!qbtns.length)return;
     var line=window.innerHeight*0.35,act=qbtns[0];
     qbtns.forEach(function(b){var el=document.getElementById(b.dataset.go);if(el&&el.getBoundingClientRect().top<=line)act=b});
